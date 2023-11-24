@@ -8,13 +8,20 @@ const JUMP_VELOCITY = 4.5
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-var health: int = 100; # HP
-var memory: int = 100; # Camera
-var battery: int = 100; # Flashlight
+var health: float = 100; # HP
+var battery: float = 100; # Flashlight
+var memory: int = 5; # Camera
 
-signal health_changed(value);
-signal memory_changed(value);
-signal battery_changed(value);
+
+signal health_changed(old: float, new: float);
+signal battery_changed(old: float, new: float);
+signal memory_changed(old: int, new: int);
+
+func _ready():
+	# Call these to initialize HUD values
+	modify_health(0);
+	modify_battery(0);
+	modify_memory(0);
 
 func _process(delta):
 	var rotate_dir = Input.get_vector("look_left", "look_right", "look_left", "look_right")
@@ -54,14 +61,17 @@ func _physics_process(delta):
 
 	move_and_slide()
 
-func modify_health(amount: int):
-	health += amount;
-	health_changed.emit(health);
+func modify_health(amount: float):
+	var old = health;
+	health = clamp(health + amount, 0, 100);
+	health_changed.emit(old, health);
+
+func modify_battery(amount: float):
+	var old = battery
+	battery = clamp(battery + amount, 0, 100);
+	battery_changed.emit(old, battery);
 
 func modify_memory(amount: int):
-	memory += amount;
-	memory_changed.emit(memory);
-
-func modify_battery(amount: int):
-	battery += amount;
-	battery_changed.emit(battery);
+	var old = memory;
+	memory = clamp(memory + amount, 0, 100);
+	memory_changed.emit(old, memory);
