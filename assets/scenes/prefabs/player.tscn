@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://c565t4dda2qg4"]
+
+[ext_resource type="Script" path="res://assets/scripts/player.gd" id="1_45euq"]
+[ext_resource type="Script" path="res://assets/scripts/interactor.gd" id="3_6xni1"]
+[ext_resource type="Script" path="res://assets/scripts/snapshot.gd" id="4_ahxwq"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8gtp5"]
+
+[sub_resource type="Environment" id="Environment_bg6b4"]
+ambient_light_source = 2
+ambient_light_color = Color(0.341176, 0.341176, 0.341176, 1)
+fog_light_color = Color(0, 0, 0, 1)
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03513, 1.31762)
+script = ExtResource("1_45euq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_8gtp5")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.667668, 0)
+cull_mask = 1048573
+environment = SubResource("Environment_bg6b4")
+
+[node name="Interactor" type="Node3D" parent="."]
+script = ExtResource("3_6xni1")
+
+[node name="Snapshot" type="Node" parent="."]
+script = ExtResource("4_ahxwq")

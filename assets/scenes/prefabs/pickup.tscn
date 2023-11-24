@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://batx7p3gidgth"]
+
+[ext_resource type="Script" path="res://assets/scripts/pickup.gd" id="1_krqup"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_uckkx"]
+
+[node name="Pickup" type="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.342844, 0)
+script = ExtResource("1_krqup")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_uckkx")
+
+[node name="Sprite" type="Sprite3D" parent="."]
+pixel_size = 0.042
+billboard = 2
+shaded = true
+texture_filter = 0

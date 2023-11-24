@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://x2scqnj2v47a"]
+
+[ext_resource type="PackedScene" uid="uid://buo80p043s8vx" path="res://assets/scenes/prefabs/enemy.tscn" id="1_31tf4"]
+[ext_resource type="Script" path="res://assets/scripts/shade.gd" id="2_73mnt"]
+
+[node name="Shade" instance=ExtResource("1_31tf4")]
+script = ExtResource("2_73mnt")

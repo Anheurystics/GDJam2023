@@ -1,0 +1,71 @@
+[gd_scene load_steps=5 format=3 uid="uid://dr1wshbq5jsvr"]
+
+[ext_resource type="Texture2D" uid="uid://bej7w5nw8fly5" path="res://assets/textures/camera.png" id="1_kvn77"]
+[ext_resource type="Script" path="res://assets/scripts/hud.gd" id="1_xanai"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_n728b"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="LabelSettings" id="LabelSettings_wnjj6"]
+font_size = 32
+
+[node name="HUD" type="CanvasLayer"]
+layer = 2
+script = ExtResource("1_xanai")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Viewmodel" type="Control" parent="Root"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 152.0
+offset_right = 3.0
+offset_bottom = 152.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Camera" type="Sprite2D" parent="Root/Viewmodel"]
+modulate = Color(0.258824, 0.258824, 0.258824, 1)
+texture_filter = 1
+position = Vector2(0, -178)
+scale = Vector2(4, 4)
+texture = ExtResource("1_kvn77")
+
+[node name="Viewfinder" type="Sprite2D" parent="Root/Viewmodel"]
+texture_filter = 1
+texture_repeat = 1
+position = Vector2(-44, -118)
+texture = SubResource("ViewportTexture_n728b")
+
+[node name="Stats" type="VBoxContainer" parent="Root"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 237.0
+offset_bottom = 168.0
+
+[node name="HP" type="Label" parent="Root/Stats"]
+layout_mode = 2
+text = "HP: 100"
+label_settings = SubResource("LabelSettings_wnjj6")
+
+[node name="Camera" type="Label" parent="Root/Stats"]
+layout_mode = 2
+text = "Camera: 100"
+label_settings = SubResource("LabelSettings_wnjj6")
+
+[node name="Flashlight" type="Label" parent="Root/Stats"]
+layout_mode = 2
+text = "Flashlight: 100"
+label_settings = SubResource("LabelSettings_wnjj6")

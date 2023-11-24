@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://b10phudbmciya"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yxh03"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_b8t6k"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_l3rpt"]
+size = Vector3(1, 1, 0.005)
+
+[node name="Slope" type="StaticBody3D"]
+transform = Transform3D(0.193185, -0.0517638, 0, 0.0517638, 0.193185, 0, 0, 0, 0.2, 0.124596, 0.00814759, -0.397243)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, -8.88178e-16, 2.98023e-08, -2.98023e-08, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_yxh03")
+mesh = SubResource("QuadMesh_b8t6k")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("BoxShape3D_l3rpt")

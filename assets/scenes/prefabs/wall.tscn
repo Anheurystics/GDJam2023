@@ -1,0 +1,58 @@
+[gd_scene load_steps=4 format=3 uid="uid://c04pqd4cv3gov"]
+
+[ext_resource type="Texture2D" uid="uid://b7hqwj3he5mel" path="res://assets/freedoom/patches/wall40_1.png" id="1_tnm5o"]
+[ext_resource type="Texture2D" uid="uid://djat18o0h12yh" path="res://assets/freedoom/patches/aqsupp01.png" id="2_j5fbs"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_l3rpt"]
+size = Vector3(1, 1, 0.25)
+
+[node name="Wall" type="StaticBody3D"]
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+shape = SubResource("BoxShape3D_l3rpt")
+
+[node name="Face1" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.625)
+pixel_size = 0.0391
+transparent = false
+shaded = true
+double_sided = false
+texture_filter = 0
+texture = ExtResource("1_tnm5o")
+
+[node name="Face2" type="Sprite3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -0.625)
+pixel_size = 0.0391
+transparent = false
+shaded = true
+double_sided = false
+texture_filter = 0
+texture = ExtResource("1_tnm5o")
+
+[node name="Side1" type="Sprite3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2.5, 0, 0)
+pixel_size = 0.0391
+transparent = false
+shaded = true
+double_sided = false
+texture_filter = 0
+texture = ExtResource("2_j5fbs")
+
+[node name="Side2" type="Sprite3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.5, 0, 0)
+pixel_size = 0.0391
+transparent = false
+shaded = true
+double_sided = false
+texture_filter = 0
+texture = ExtResource("2_j5fbs")
+
+[node name="Side3" type="Sprite3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, -2.5, 0)
+pixel_size = 0.0391
+transparent = false
+shaded = true
+double_sided = false
+texture_filter = 0
+texture = ExtResource("2_j5fbs")
