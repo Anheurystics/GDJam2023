@@ -45,6 +45,8 @@ spot_angle = 70.0
 [node name="Shade" parent="." instance=ExtResource("11_8xye7")]
 sprite_name = "bos2"
 sprite_mirrored = false
+attack_start_frame = "e"
+num_attack_frames = 4
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 navigation_mesh = SubResource("NavigationMesh_rbb75")
