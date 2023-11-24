@@ -1,12 +1,12 @@
-extends StaticBody3D
+class_name Door extends StaticBody3D
 
 var open: bool = false;
 
-func set_open():
+func toggle_open():
 	open = !open;
 	
 	var tween = get_tree().create_tween();
-	var sprite = find_child("Sprite3D");
+	var sprite = find_child("Visual");
 	if open:
 		tween.tween_property(sprite, "position:y", 5, .5);
 		await tween.finished
