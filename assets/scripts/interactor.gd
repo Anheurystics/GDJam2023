@@ -1,4 +1,4 @@
-extends Node3D
+class_name Interactor extends Node3D
 
 func interact():
 	var g_basis = global_transform.basis;

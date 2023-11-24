@@ -8,7 +8,7 @@
 
 [sub_resource type="Environment" id="Environment_bg6b4"]
 ambient_light_source = 2
-ambient_light_color = Color(0.341176, 0.341176, 0.341176, 1)
+ambient_light_color = Color(0.223529, 0.223529, 0.223529, 1)
 fog_light_color = Color(0, 0, 0, 1)
 
 [node name="Player" type="CharacterBody3D"]
@@ -28,3 +28,9 @@ script = ExtResource("3_6xni1")
 
 [node name="Snapshot" type="Node" parent="."]
 script = ExtResource("4_ahxwq")
+
+[node name="Flashlight" type="SpotLight3D" parent="."]
+visible = false
+light_energy = 15.0
+spot_range = 20.0
+spot_angle = 35.0

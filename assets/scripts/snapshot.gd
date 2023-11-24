@@ -89,9 +89,6 @@ func _process(delta):
 			tween.tween_property(self, "camera_ads", 0.0, 0.25);
 			tween.parallel().tween_property(self, "camera_res", 0.25, 0.25);
 	
-	if Input.is_action_just_pressed("take_picture"):
-		take_picture();
-	
 	# if camera_raised:
 	# 	if Input.is_action_pressed("zoom_in"):
 	#		increment_camera_zoom(-90 * delta);

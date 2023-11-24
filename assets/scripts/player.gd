@@ -12,6 +12,9 @@ var health: float = 100; # HP
 var battery: float = 100; # Flashlight
 var memory: int = 5; # Camera
 
+@onready var flashlight: SpotLight3D = $Flashlight;
+@onready var interactor: Interactor = $Interactor;
+@onready var snapshot: Snapshot = $Snapshot;
 
 signal health_changed(old: float, new: float);
 signal battery_changed(old: float, new: float);
@@ -30,7 +33,22 @@ func _process(delta):
 		rotate_y(-PI * 0.75 * rotate_sign * delta)
 	
 	if Input.is_action_just_pressed("interact"):
-		$Interactor.interact();
+		interactor.interact();
+		
+	if Input.is_action_just_pressed("flashlight"):
+		flashlight.visible = !flashlight.visible;
+	
+	if battery == 0:
+		flashlight.visible = false;
+	
+	if flashlight.visible:
+		modify_battery(-10 * delta);
+		if battery <= 0:
+			flashlight.visible = false;
+	
+	if Input.is_action_just_pressed("take_picture") and memory > 0:
+		snapshot.take_picture();
+		modify_memory(-1);
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -47,7 +65,7 @@ func _physics_process(delta):
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
 	var speed_to_use = SPEED;
-	if $Snapshot.camera_ads > 0:
+	if snapshot.camera_ads > 0:
 		speed_to_use = ADS_SPEED;
 	elif Input.is_action_pressed("sprint"):
 		speed_to_use = SPRINT_SPEED;
