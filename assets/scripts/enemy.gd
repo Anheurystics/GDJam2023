@@ -1,7 +1,7 @@
 class_name Enemy extends CharacterBody3D
 
-const SPEED = 5.0
-const CHASE_SPEED = 8.0;
+const SPEED = 4.0
+const CHASE_SPEED = 6.0;
 const JUMP_VELOCITY = 4.5
 const EIGHTH = 1.0 / 8.0
 
@@ -28,12 +28,16 @@ var sprite_frames: SpriteFrames;
 @export var num_attack_frames: int;
 
 var health: int = 50;
+var curr_anim_prefix: String = "";
 var curr_anim_suffix: String = "";
 var angle_to_player: float = 0;
 
 var test_public: bool = false;
 var is_attacking: bool = false;
 var player_target: Player = null;
+
+var has_last_known_target_position: bool = false;
+var last_known_target_position: Vector3;
 
 func _ready():
 	var walk_frames = [];
@@ -79,7 +83,7 @@ func set_shaded(shaded: bool):
 func _on_nav_agent_link_reached(details):
 	var door: Door = details.owner.get_parent() as Door;
 	if door and not door.open:
-		await get_tree().create_timer(0.5).timeout;
+		await get_tree().create_timer(0.2).timeout;
 		$Interactor.interact();
 		nav_paused = true;
 		await get_tree().create_timer(0.5).timeout;
@@ -174,12 +178,16 @@ func _process(_delta):
 		play_animation("walk");
 	
 	var curr_speed = velocity.length();
-	var speed_scale = curr_speed / SPEED;
-	sprite.speed_scale = speed_scale;
-	shadeSprite.speed_scale = speed_scale;
-	if curr_speed == 0.0:
-		sprite.set_frame_and_progress(1, 0);
-		shadeSprite.set_frame_and_progress(1, 0);
+	var anim_speed = 1;
+	if curr_anim_prefix == "walk":
+		anim_speed = curr_speed / SPEED;
+		if anim_speed == 0.0:
+			sprite.set_frame_and_progress(1, 0);
+			shadeSprite.set_frame_and_progress(1, 0);
+	elif curr_anim_prefix == "attack":
+		anim_speed = 2;
+	sprite.speed_scale = anim_speed;
+	shadeSprite.speed_scale = anim_speed;
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -198,6 +206,11 @@ func _physics_process(delta):
 			velocity = to_target.normalized() * (CHASE_SPEED if player_target else SPEED);
 	
 	check_player_target();
+	
+	if not player_target and has_last_known_target_position:
+		has_last_known_target_position = false;
+		navigate_to(last_known_target_position);
+	
 	move_and_slide()
 
 func check_player_target():
@@ -211,14 +224,21 @@ func check_player_target():
 		var player_result = space_state.intersect_ray(player_ray_query);
 		var collider = player_result.collider;
 		if collider and collider is Player:
-			print("found player");
 			player_target = collider as Player;
+		else:
+			if player_target:
+				has_last_known_target_position = true;
+				last_known_target_position = player_target.global_position;
+			else:
+				has_last_known_target_position = false;
+			player_target = null;
 
 func navigate_to(target: Vector3):
 	nav_agent.target_desired_distance = 2.0;
 	nav_agent.target_position = target;
 
 func play_animation(prefix: String):
+	curr_anim_prefix = prefix;
 	var full_anim_name = prefix + "_" + curr_anim_suffix;
 	if sprite.sprite_frames.has_animation(full_anim_name):
 		sprite.play(full_anim_name);
@@ -228,8 +248,6 @@ func play_animation(prefix: String):
 func attack(player: Player):
 	is_attacking = true;
 	play_animation("attack");
-	await get_tree().create_timer(1.0).timeout;
+	await get_tree().create_timer(0.5).timeout;
 	player.modify_health(-10);
-	play_animation("walk");
-	await get_tree().create_timer(1.0).timeout;
 	is_attacking = false;
