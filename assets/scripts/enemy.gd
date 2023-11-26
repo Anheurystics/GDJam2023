@@ -218,7 +218,9 @@ func _physics_process(delta):
 	move_and_slide()
 
 func check_player_target():
-	if abs(angle_to_player) > PI * 6 * EIGHTH:
+	if abs(angle_to_player) <= PI * 6 * EIGHTH:
+		return;
+		
 		var space_state = get_parent().get_world_3d().direct_space_state;
 		var player_ray_query = PhysicsRayQueryParameters3D.create(global_position, get_viewport().get_camera_3d().global_position);
 		player_ray_query.collide_with_areas = false;
@@ -226,6 +228,9 @@ func check_player_target():
 		player_ray_query.collision_mask = ~2;
 		
 		var player_result = space_state.intersect_ray(player_ray_query);
+	if !player_result:
+		return;
+		
 		var collider = player_result.collider;
 		if collider and collider is Player:
 			player_target = collider as Player;
@@ -255,3 +260,25 @@ func attack(player: Player):
 	await get_tree().create_timer(0.5).timeout;
 	player.modify_health(-10);
 	is_attacking = false;
+
+func serialize():
+	return {
+		"global_position": global_position,
+		"nav_paused": nav_paused,
+		"nav_target_position": nav_agent.target_position,
+		"health": health,
+		"is_attacking": is_attacking,
+		"player_target": null if player_target == null else player_target.get_path(),
+		"has_last_known_target_position": has_last_known_target_position,
+		"last_known_target_position": last_known_target_position
+	}
+
+func deserialize(data):
+	global_position = data.global_position;
+	nav_paused = data.nav_paused;
+	nav_agent.target_position = data.nav_target_position;
+	health = data.health;
+	is_attacking = data.is_attacking;
+	player_target = null if !data.player_target else get_node(data.player_target);
+	has_last_known_target_position = data.has_last_known_target_position;
+	last_known_target_position = data.last_known_target_position;

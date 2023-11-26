@@ -11,7 +11,7 @@ ambient_light_source = 2
 ambient_light_color = Color(0.223529, 0.223529, 0.223529, 1)
 fog_light_color = Color(0, 0, 0, 1)
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["persist"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03513, 1.31762)
 script = ExtResource("1_45euq")
 
@@ -32,5 +32,6 @@ script = ExtResource("4_ahxwq")
 [node name="Flashlight" type="SpotLight3D" parent="."]
 visible = false
 light_energy = 15.0
+shadow_enabled = true
 spot_range = 20.0
 spot_angle = 35.0

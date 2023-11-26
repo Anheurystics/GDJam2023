@@ -7,7 +7,7 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_l3rpt"]
 size = Vector3(1, 1, 0.005)
 
-[node name="Door" type="StaticBody3D"]
+[node name="Door" type="StaticBody3D" groups=["persist"]]
 input_ray_pickable = false
 script = ExtResource("1_mmuil")
 

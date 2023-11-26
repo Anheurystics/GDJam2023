@@ -5,11 +5,14 @@ var open: bool = false;
 @export var can_only_open: bool = false;
 
 func toggle_open():
-	if open and can_only_open:
+	set_open(!open);
+
+func set_open(p_open: bool):
+	if !p_open and can_only_open:
 		return;
-		
-	open = !open;
-	
+
+	open = p_open;
+
 	var tween = get_tree().create_tween();
 	var sprite = find_child("Visual");
 	if open:
@@ -22,3 +25,11 @@ func toggle_open():
 		await tween.finished
 		set_collision_layer_value(1, true);
 		set_collision_layer_value(2, false);
+
+func serialize():
+	return {
+		"open": open
+	}
+
+func deserialize(data):
+	set_open(data.open);

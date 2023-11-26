@@ -94,3 +94,24 @@ func modify_memory(amount: int):
 	var old = memory;
 	memory = clamp(memory + amount, 0, 100);
 	memory_changed.emit(old, memory);
+
+func serialize():
+	return {
+		"global_position": global_position,
+		"global_rotation": global_rotation,
+		"health": health,
+		"battery": battery,
+		"memory": memory,
+		"flashlight_visible": flashlight.visible
+	}
+	
+func deserialize(data):
+	global_position = data.global_position;
+	global_rotation = data.global_rotation;
+	health = data.health;
+	modify_health(0);
+	battery = data.battery;
+	modify_battery(0);
+	memory = data.memory;
+	modify_memory(0);
+	flashlight.visible = data.flashlight_visible;
