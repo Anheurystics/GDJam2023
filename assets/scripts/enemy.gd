@@ -57,7 +57,9 @@ func _ready():
 	
 	sprite.sprite_frames = sprite_frames;
 	sprite.frame_changed.connect(_on_sprite_frame_changed);
+	sprite.material_override = sprite.material_override.duplicate();
 	shadeSprite.sprite_frames = sprite_frames;
+	shadeSprite.material_override = shadeSprite.material_override.duplicate();
 	
 	await NavigationServer3D.map_changed;
 	nav_agent.link_reached.connect(_on_nav_agent_link_reached);
