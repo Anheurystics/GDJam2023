@@ -22,6 +22,8 @@ signal health_changed(old: float, new: float);
 signal battery_changed(old: float, new: float);
 signal memory_changed(old: int, new: int);
 
+var owned_keys: PackedStringArray = [];
+
 func _ready():
 	# Call these to initialize HUD values
 	modify_health(0);

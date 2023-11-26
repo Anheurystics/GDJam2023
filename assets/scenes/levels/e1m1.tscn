@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bh66wypon0v4k"]
+[gd_scene load_steps=18 format=3 uid="uid://bh66wypon0v4k"]
 
 [ext_resource type="PackedScene" uid="uid://mt8vumqp3wne" path="res://assets/scenes/prefabs/floor.tscn" id="1_0bjn5"]
 [ext_resource type="Script" path="res://assets/scripts/level.gd" id="1_8e5vm"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://be4rcdjalvoqh" path="res://assets/scenes/prefabs/trick_door.tscn" id="12_hgswm"]
 [ext_resource type="Script" path="res://assets/scripts/pause_menu.gd" id="13_4p8jf"]
 [ext_resource type="PackedScene" uid="uid://x2scqnj2v47a" path="res://assets/scenes/prefabs/enemies/shade.tscn" id="13_ufw0t"]
+[ext_resource type="PackedScene" uid="uid://bm6741mnf5w32" path="res://assets/scenes/prefabs/pickups/key.tscn" id="16_r3x0q"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_p2ay5"]
 font_size = 64
@@ -192,6 +193,13 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -12.5,
 
 [node name="Door2" parent="NavigationRegion3D/Level" instance=ExtResource("3_l8byn")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.5, 2.5, 0)
+required_key = "e1m1_a"
+
+[node name="Front" parent="NavigationRegion3D/Level/Door2/Visual" index="0"]
+modulate = Color(0.101961, 0.337255, 1, 1)
+
+[node name="Back" parent="NavigationRegion3D/Level/Door2/Visual" index="1"]
+modulate = Color(0.101961, 0.337255, 1, 1)
 
 [node name="Wall10" parent="NavigationRegion3D/Level" instance=ExtResource("2_uqrf2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2.5, 12.5)
@@ -414,7 +422,12 @@ collision_layer = 3
 
 [node name="Shade" parent="." instance=ExtResource("13_ufw0t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, 4)
-sprite_name = "bos2"
-sprite_mirrored = false
-attack_start_frame = "e"
-num_attack_frames = 4
+
+[node name="Shade2" parent="." instance=ExtResource("13_ufw0t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.606732, 1, 4)
+
+[node name="Key" parent="." instance=ExtResource("16_r3x0q")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 10)
+key_id = "e1m1_a"
+
+[editable path="NavigationRegion3D/Level/Door2"]

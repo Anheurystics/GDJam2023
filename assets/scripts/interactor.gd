@@ -10,4 +10,4 @@ func interact():
 	if result && result.collider:
 		var interactable = result.collider.find_child("Interactable");
 		if interactable:
-			interactable.interact();
+			interactable.interact(self);

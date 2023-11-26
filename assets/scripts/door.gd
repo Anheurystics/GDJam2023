@@ -3,13 +3,19 @@ class_name Door extends StaticBody3D
 var open: bool = false;
 @export var can_enemy_open: bool = true;
 @export var can_only_open: bool = false;
+@export var required_key: String = "";
 
-func toggle_open():
-	set_open(!open);
+func toggle_open(interactor: Interactor):
+	set_open(!open, interactor);
 
-func set_open(p_open: bool):
-	if !p_open and can_only_open:
+func set_open(p_open: bool, interactor: Interactor):
+	if !p_open && can_only_open:
 		return;
+	
+	if p_open && required_key != "":
+		var player: Player = interactor.get_parent() as Player;
+		if !player || !player.owned_keys.has(required_key):
+			return;
 
 	open = p_open;
 
@@ -32,4 +38,4 @@ func serialize():
 	}
 
 func deserialize(data):
-	set_open(data.open);
+	set_open(data.open, null);
