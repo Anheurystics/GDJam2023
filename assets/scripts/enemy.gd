@@ -84,11 +84,14 @@ func set_shaded(shaded: bool):
 func _on_nav_agent_link_reached(details):
 	var door: Door = details.owner.get_parent() as Door;
 	if door and not door.open:
+		if door.can_enemy_open:
 		await get_tree().create_timer(0.2).timeout;
 		$Interactor.interact();
 		nav_paused = true;
 		await get_tree().create_timer(0.5).timeout;
 		nav_paused = false;
+		else:
+			walk_random();
 
 func _on_nav_agent_navigation_finished():
 	await get_tree().create_timer(1.0).timeout;

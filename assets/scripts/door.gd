@@ -1,8 +1,13 @@
 class_name Door extends StaticBody3D
 
 var open: bool = false;
+@export var can_enemy_open: bool = true;
+@export var can_only_open: bool = false;
 
 func toggle_open():
+	if open and can_only_open:
+		return;
+		
 	open = !open;
 	
 	var tween = get_tree().create_tween();

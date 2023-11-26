@@ -1,0 +1,74 @@
+[gd_scene load_steps=6 format=3 uid="uid://be4rcdjalvoqh"]
+
+[ext_resource type="Script" path="res://assets/scripts/door.gd" id="1_j680d"]
+[ext_resource type="Script" path="res://assets/scripts/interactable_door.gd" id="2_2lqmu"]
+[ext_resource type="Texture2D" uid="uid://b7hqwj3he5mel" path="res://assets/freedoom/patches/wall40_1.png" id="3_htmnp"]
+[ext_resource type="Texture2D" uid="uid://djat18o0h12yh" path="res://assets/freedoom/patches/aqsupp01.png" id="4_3b1cl"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p6exq"]
+size = Vector3(1, 1, 0.25)
+
+[node name="TrickDoor" type="StaticBody3D"]
+input_ray_pickable = false
+script = ExtResource("1_j680d")
+can_enemy_open = false
+can_only_open = true
+
+[node name="Interactable" type="Node" parent="."]
+script = ExtResource("2_2lqmu")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+shape = SubResource("BoxShape3D_p6exq")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Face1" type="Sprite3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.625)
+pixel_size = 0.0391
+transparent = false
+shaded = true
+double_sided = false
+texture_filter = 0
+texture = ExtResource("3_htmnp")
+
+[node name="Face2" type="Sprite3D" parent="Visual"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -0.625)
+pixel_size = 0.0391
+transparent = false
+shaded = true
+double_sided = false
+texture_filter = 0
+texture = ExtResource("3_htmnp")
+
+[node name="Side1" type="Sprite3D" parent="Visual"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2.5, 0, 0)
+pixel_size = 0.0391
+transparent = false
+shaded = true
+double_sided = false
+texture_filter = 0
+texture = ExtResource("4_3b1cl")
+
+[node name="Side2" type="Sprite3D" parent="Visual"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.5, 0, 0)
+pixel_size = 0.0391
+transparent = false
+shaded = true
+double_sided = false
+texture_filter = 0
+texture = ExtResource("4_3b1cl")
+
+[node name="Side3" type="Sprite3D" parent="Visual"]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, -2.5, 0)
+pixel_size = 0.0391
+transparent = false
+shaded = true
+double_sided = false
+texture_filter = 0
+texture = ExtResource("4_3b1cl")
+
+[node name="NavigationLink3D" type="NavigationLink3D" parent="."]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, -2.5, 0)
+start_position = Vector3(0, 0, -1.5)
+end_position = Vector3(0, 0, 1.5)
