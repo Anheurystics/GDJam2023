@@ -22,7 +22,6 @@ Progress="*res://assets/scripts/progress.gd"
 [display]
 
 window/size/resizable=false
-window/vsync/vsync_mode=0
 
 [filesystem]
 
