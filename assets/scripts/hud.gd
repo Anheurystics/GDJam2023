@@ -24,18 +24,24 @@ func _ready():
 
 func _on_health_changed(old_health: float, new_health: float):
 	hp.text = "HP: " + str(floori(new_health));
-	if new_health > old_health:
-		flash_damage(HEAL_COLOR);
+	if new_health <= 0:
+		flash_death();
+	elif new_health > old_health:
+		flash_overlay(HEAL_COLOR);
 	elif new_health < old_health:
-		flash_damage(DAMAGE_COLOR);
-
-func flash_damage(color: Color, duration: float = 0.2):
+		flash_overlay(DAMAGE_COLOR);
+		
+func flash_overlay(color: Color, duration: float = 0.2):
 	color_overlay.visible = true;
 	color_overlay.color = color;
 	var tween: Tween = create_tween();
 	tween.tween_property(color_overlay, "color:a", 0, duration);
 	await get_tree().create_timer(duration).timeout;
 	color_overlay.visible = false;
+
+func flash_death():
+	color_overlay.visible = true;
+	color_overlay.color = DAMAGE_COLOR;
 
 func _on_memory_changed(_old_memory: int, new_memory: int):
 	camera.text = "Camera: " + str(new_memory);

@@ -5,6 +5,7 @@ const SPRINT_SPEED = 8.0
 const ADS_SPEED = 4.0
 const JUMP_VELOCITY = 4.5
 const FLASHLIGHT_DRAIN_RATE = 5;
+const FLASHLIGHT_REGEN_RATE = 1;
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -28,6 +29,9 @@ func _ready():
 	modify_memory(0);
 
 func _process(delta):
+	if health <= 0:
+		return;
+
 	var rotate_dir = Input.get_vector("look_left", "look_right", "look_left", "look_right")
 	if rotate_dir.x != 0:
 		var rotate_sign = sign(rotate_dir.x)
@@ -46,12 +50,17 @@ func _process(delta):
 		modify_battery(-FLASHLIGHT_DRAIN_RATE * delta);
 		if battery <= 0:
 			flashlight.visible = false;
+	else:
+		modify_battery(FLASHLIGHT_REGEN_RATE * delta);
 	
 	if Input.is_action_just_pressed("take_picture") and memory > 0:
 		snapshot.take_picture();
 		modify_memory(-1);
 
 func _physics_process(delta):
+	if health <= 0:
+		return;
+	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
@@ -84,6 +93,12 @@ func modify_health(amount: float):
 	var old = health;
 	health = clamp(health + amount, 0, 100);
 	health_changed.emit(old, health);
+	
+	if health <= 0:
+		var tween = get_tree().create_tween();
+		tween.set_parallel(true);
+		tween.tween_property($Camera3D, "position:y", 0, 0.8);
+		tween.tween_property($Camera3D, "rotation:y", PI/2, 0.8);
 
 func modify_battery(amount: float):
 	var old = battery
