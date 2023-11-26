@@ -22,7 +22,7 @@ func _process(delta):
 		await get_tree().create_timer(0.5).timeout;
 		if player_target:
 			navigate_to(player_target.global_position);
-		
+
 	if is_following_player:
 		if not player_target:
 			attack_timer.stop();
@@ -30,7 +30,7 @@ func _process(delta):
 		else:
 			if attack_timer and attack_timer.is_stopped():
 				attack_timer.start(1.0);
-	
+
 	if attack_timer and not attack_timer.is_stopped():
 		var diff = player_target.global_position - global_position;
 		diff.y = 0; 
@@ -45,6 +45,12 @@ func _on_nav_agent_navigation_finished():
 		navigate_to(player_target.global_position);
 	else:
 		super._on_nav_agent_navigation_finished()
+
+func get_speed():
+	if player_target:
+		return 2;
+	else:
+		return 1;
 
 func serialize():
 	var data = super.serialize();

@@ -5,3 +5,6 @@
 
 [node name="Shade" groups=["persist"] instance=ExtResource("1_31tf4")]
 script = ExtResource("2_73mnt")
+sprite_name = "poss"
+attack_start_frame = "e"
+num_attack_frames = 3
