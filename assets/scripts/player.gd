@@ -1,9 +1,10 @@
 class_name Player extends CharacterBody3D
 
-const SPEED = 7.0
-const SPRINT_SPEED = 12.0
+const SPEED = 4.0
+const SPRINT_SPEED = 8.0
 const ADS_SPEED = 4.0
 const JUMP_VELOCITY = 4.5
+const FLASHLIGHT_DRAIN_RATE = 5;
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -42,7 +43,7 @@ func _process(delta):
 		flashlight.visible = false;
 	
 	if flashlight.visible:
-		modify_battery(-10 * delta);
+		modify_battery(-FLASHLIGHT_DRAIN_RATE * delta);
 		if battery <= 0:
 			flashlight.visible = false;
 	
@@ -67,7 +68,7 @@ func _physics_process(delta):
 	var speed_to_use = SPEED;
 	if snapshot.camera_ads > 0:
 		speed_to_use = ADS_SPEED;
-	elif Input.is_action_pressed("sprint"):
+	elif Input.is_action_pressed("sprint") and direction.dot(global_transform.basis.z) <= 0:
 		speed_to_use = SPRINT_SPEED;
 
 	if direction:
