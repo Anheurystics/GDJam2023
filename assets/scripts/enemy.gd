@@ -56,15 +56,16 @@ func _ready():
 	load_sprite_frames("attack", sprite_name, attack_frames, false);
 	
 	sprite.sprite_frames = sprite_frames;
-	sprite.animation_finished.connect(_on_sprite_animation_finished);
+	sprite.frame_changed.connect(_on_sprite_frame_changed);
 	shadeSprite.sprite_frames = sprite_frames;
 	
 	await NavigationServer3D.map_changed;
 	nav_agent.link_reached.connect(_on_nav_agent_link_reached);
 	nav_agent.navigation_finished.connect(_on_nav_agent_navigation_finished);
 	
-func _on_sprite_animation_finished():
-	pass
+func _on_sprite_frame_changed():
+	if sprite.material_override:
+		sprite.material_override.set_shader_parameter("tex", sprite.sprite_frames.get_frame_texture(sprite.animation, sprite.frame));
 
 func falter_shade(duration: float):
 	set_shaded(false);
