@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://bh66wypon0v4k"]
+[gd_scene load_steps=17 format=3 uid="uid://bh66wypon0v4k"]
 
 [ext_resource type="PackedScene" uid="uid://mt8vumqp3wne" path="res://assets/scenes/prefabs/floor.tscn" id="1_0bjn5"]
+[ext_resource type="Script" path="res://assets/scripts/level.gd" id="1_8e5vm"]
 [ext_resource type="PackedScene" uid="uid://dr1wshbq5jsvr" path="res://assets/scenes/prefabs/hud.tscn" id="1_y8s3x"]
 [ext_resource type="PackedScene" uid="uid://c565t4dda2qg4" path="res://assets/scenes/prefabs/player.tscn" id="2_rbv45"]
 [ext_resource type="PackedScene" uid="uid://c04pqd4cv3gov" path="res://assets/scenes/prefabs/wall.tscn" id="2_uqrf2"]
@@ -19,6 +20,7 @@
 font_size = 64
 
 [node name="Root" type="Node3D"]
+script = ExtResource("1_8e5vm")
 
 [node name="HUD" parent="." instance=ExtResource("1_y8s3x")]
 

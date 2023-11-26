@@ -28,7 +28,7 @@ func _process(delta):
 			attack_timer.stop();
 			is_following_player = false;
 		else:
-			if attack_timer.is_stopped():
+			if attack_timer and attack_timer.is_stopped():
 				attack_timer.start(1.0);
 	
 	if attack_timer and not attack_timer.is_stopped():
