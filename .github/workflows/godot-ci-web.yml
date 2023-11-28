@@ -1,4 +1,7 @@
-name: Godot tWeb
+name: Godot Web
+
+env:
+  GODOT_VERSION: 4.1.3
 
 on:
   push:
