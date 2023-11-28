@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2o2gifatw8bv"]
+
+[ext_resource type="LabelSettings" uid="uid://dbfuqqvgwxrtq" path="res://log_label_settings.tres" id="1_kqpw1"]
+
+[node name="LogText" type="Label"]
+text = "Flashlight: 100"
+label_settings = ExtResource("1_kqpw1")

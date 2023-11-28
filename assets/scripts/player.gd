@@ -15,20 +15,33 @@ var battery: float = 100; # Flashlight
 var memory: int = 5; # Camera
 
 @onready var flashlight: SpotLight3D = $Flashlight;
+@onready var flashlight_raycast: RayCast3D = $Flashlight/RayCast3D;
 @onready var interactor: Interactor = $Interactor;
 @onready var snapshot: Snapshot = $Snapshot;
 
 signal health_changed(old: float, new: float);
 signal battery_changed(old: float, new: float);
 signal memory_changed(old: int, new: int);
+signal message_logged(message: String);
 
 var owned_keys: PackedStringArray = [];
+
+var flashlight_sphere_query: PhysicsShapeQueryParameters3D;
 
 func _ready():
 	# Call these to initialize HUD values
 	modify_health(0);
 	modify_battery(0);
 	modify_memory(0);
+	
+	flashlight_sphere_query = PhysicsShapeQueryParameters3D.new();
+	flashlight_sphere_query.collide_with_areas = false;
+	flashlight_sphere_query.collide_with_bodies = true;
+	flashlight_sphere_query.collision_mask = 4;
+	
+	var sphere_shape = SphereShape3D.new();
+	sphere_shape.radius = 6;
+	flashlight_sphere_query.shape = sphere_shape;
 
 func _process(delta):
 	if health <= 0:
@@ -55,9 +68,33 @@ func _process(delta):
 	else:
 		modify_battery(FLASHLIGHT_REGEN_RATE * delta);
 	
-	if Input.is_action_just_pressed("take_picture") and memory > 0:
+	if Input.is_action_just_pressed("take_picture") and snapshot.camera_raised and memory > 0:
 		snapshot.take_picture();
 		modify_memory(-1);
+	
+	if flashlight.visible:
+		check_flashlight_damage(delta);
+
+func check_flashlight_damage(delta):
+	var space_state = get_parent().get_world_3d().direct_space_state;
+	flashlight_sphere_query.transform.origin = global_position
+	var sphere_results = space_state.intersect_shape(flashlight_sphere_query);
+	if sphere_results:
+		for result in sphere_results:
+			var enemy: Enemy = result.collider as Enemy;
+			
+			# Check if this enemy is within line of sight using a raycast
+			var enemy_ray_query = PhysicsRayQueryParameters3D.create(global_position, enemy.global_position);
+			enemy_ray_query.collide_with_areas = false;
+			enemy_ray_query.collide_with_bodies = true;
+			enemy_ray_query.collision_mask = 4;
+			
+			var enemy_result = space_state.intersect_ray(enemy_ray_query);
+			if enemy_result && enemy == enemy_result.collider:
+				var to_enemy = enemy_ray_query.to - enemy_ray_query.from;
+				var ratio = acos(to_enemy.normalized().dot(global_transform.basis.z)) / PI;
+				if ratio > 0.8:
+					enemy.deal_damage(5 * ((ratio - 0.8) / 0.2) * delta);
 
 func _physics_process(delta):
 	if health <= 0:
@@ -132,3 +169,6 @@ func deserialize(data):
 	memory = data.memory;
 	modify_memory(0);
 	flashlight.visible = data.flashlight_visible;
+
+func log_message(message: String):
+	message_logged.emit(message);

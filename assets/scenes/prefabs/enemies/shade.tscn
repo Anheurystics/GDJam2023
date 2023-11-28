@@ -7,4 +7,6 @@
 script = ExtResource("2_73mnt")
 sprite_name = "poss"
 attack_start_frame = "e"
-num_attack_frames = 3
+num_attack_frames = 2
+can_open_doors = false
+max_health = 20.0

@@ -3,16 +3,21 @@ class_name HUD extends CanvasLayer
 @onready var viewmodel: Control = $Root/Viewmodel;
 @onready var viewfinder: Sprite2D = $Root/Viewmodel/Viewfinder;
 
-@onready var hp: Label = $Root/Stats/HP;
-@onready var camera: Label = $Root/Stats/Camera;
-@onready var flashlight: Label = $Root/Stats/Flashlight;
+@onready var hp: Label = $Root/HP;
+@onready var camera: Label = $Root/Camera;
+@onready var flashlight: Label = $Root/Flashlight;
 @onready var color_overlay: ColorRect = $Root/ColorOverlay
+@onready var log_container: VBoxContainer = $Root/Log;
+
+@onready var log_scene = preload("res://assets/scenes/prefabs/log_text.tscn");
 
 var viewmodel_initial_y: float;
 
 const FLASH_ALPHA = 100.0 / 255.0;
 const DAMAGE_COLOR: Color = Color(Color.RED, FLASH_ALPHA);
 const HEAL_COLOR: Color = Color(Color.GREEN, FLASH_ALPHA);
+
+var log_text_pool: Array = [];
 
 func _ready():
 	viewmodel_initial_y = viewmodel.position.y;
@@ -21,6 +26,7 @@ func _ready():
 	player.health_changed.connect(_on_health_changed);
 	player.memory_changed.connect(_on_memory_changed);
 	player.battery_changed.connect(_on_battery_changed);
+	player.message_logged.connect(_on_message_logged);
 
 func _on_health_changed(old_health: float, new_health: float):
 	hp.text = "HP: " + str(floori(new_health));
@@ -61,3 +67,22 @@ func update_camera(raised: bool):
 		viewmodel.position.y = viewmodel_initial_y;		
 		tween.tween_property(viewmodel, "scale", Vector2.ONE, 0.25);
 		tween.parallel().tween_property(viewmodel, "position:y", viewmodel_initial_y, 0.25);
+
+func _on_message_logged(message: String, duration: float = 5.0, color: Color = Color.WHITE):
+	var log_node: Label = null;
+	for l in log_container.get_children():
+		if !l.visible:
+			log_node = l;
+	
+	if !log_node:
+		log_node = log_scene.instantiate();
+		log_container.add_child(log_node);
+	
+	log_node.visible = true;
+	log_node.text = message;
+	log_node.set_modulate(color);
+	
+	get_tree().create_timer(duration).timeout.connect(hide_log.bind(log_node));
+
+func hide_log(log_node: Label):
+	log_node.visible = false;

@@ -10,6 +10,9 @@ size = Vector3(1, 1, 0.005)
 [node name="Door" type="StaticBody3D" groups=["persist"]]
 input_ray_pickable = false
 script = ExtResource("1_mmuil")
+can_enemy_open = null
+can_only_open = null
+required_key = null
 
 [node name="Interactable" type="Node" parent="."]
 script = ExtResource("2_j3i77")

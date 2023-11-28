@@ -7,7 +7,8 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity");
 
 @onready var nav_agent: NavigationAgent3D = $NavAgent;
 @onready var sprite: AnimatedSprite3D = $Sprite;
-@onready var shadeSprite: AnimatedSprite3D = $ShadeSprite;
+@onready var dissolve: Dissolve = $Dissolve;
+@onready var invisibleSprite: AnimatedSprite3D = $InvisibleSprite;
 
 var nav_paused: bool = false;
 var sprite_frames: SpriteFrames;
@@ -24,7 +25,10 @@ var sprite_frames: SpriteFrames;
 @export var attack_start_frame: String;
 @export var num_attack_frames: int;
 
-var health: int = 50;
+@export var can_open_doors: bool = true;
+
+@export var max_health: float = 50;
+@onready var health: float = max_health;
 var curr_anim_prefix: String = "";
 var curr_anim_suffix: String = "";
 var angle_to_player: float = 0;
@@ -54,8 +58,11 @@ func _ready():
 	sprite.sprite_frames = sprite_frames;
 	sprite.frame_changed.connect(_on_sprite_frame_changed);
 	sprite.material_override = sprite.material_override.duplicate();
-	shadeSprite.sprite_frames = sprite_frames;
-	shadeSprite.material_override = shadeSprite.material_override.duplicate();
+	invisibleSprite.sprite_frames = sprite_frames;
+	invisibleSprite.material_override = invisibleSprite.material_override.duplicate();
+	
+	dissolve.initialize(sprite.material_override);
+	dissolve.set_dissolve_amount(0.0);
 	
 	await NavigationServer3D.map_changed;
 	nav_agent.link_reached.connect(_on_nav_agent_link_reached);
@@ -71,29 +78,36 @@ func falter_shade(duration: float):
 	set_shaded(true);
 
 func set_shaded(shaded: bool):
+	var sprite_layer: int;
+	var sprite_shadow: GeometryInstance3D.ShadowCastingSetting;
 	if shaded:
-		$Sprite.layers = 2;
-		$ShadeSprite.visible = true;
-		$ShadeSprite.layers = 1;
+		sprite_layer = 2;
+		sprite_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF;
 	else:
-		$Sprite.layers = 1;
-		$ShadeSprite.visible = false;
+		sprite_layer = 1;
+		sprite_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON;
+	$Sprite.layers = sprite_layer;
+	$Sprite.cast_shadow = sprite_shadow;
+	$InvisibleSprite.visible = shaded;
 
 func _on_nav_agent_link_reached(details):
 	var door: Door = details.owner.get_parent() as Door;
 	if door and not door.open:
-		if door.can_enemy_open:
+		if door.can_enemy_open and can_open_doors:
 			await get_tree().create_timer(0.2).timeout;
 			$Interactor.interact();
 			nav_paused = true;
 			await get_tree().create_timer(0.5).timeout;
 			nav_paused = false;
 		else:
-			walk_random();
+			walk_random(1.0);
 
 func _on_nav_agent_navigation_finished():
-	await get_tree().create_timer(1.0).timeout;
-	walk_random();
+	walk_random(1.0);
+
+func deal_damage(value: float):
+	health = max(0, health - value);
+	dissolve.set_dissolve_amount(1.0 - (float(health) / max_health));
 
 func load_sprite_frames(anim_prefix: String, prefix: String, frames: Array, loop: bool):
 	if frames.is_empty():
@@ -118,7 +132,10 @@ func load_sprite_frames(anim_prefix: String, prefix: String, frames: Array, loop
 			var path = "res://assets/freedoom/sprites/%s%s.png" % [prefix, suffix];
 			sprite_frames.add_frame(anim_name, load(path));
 
-func walk_random():
+func walk_random(delay: float):
+	if delay > 0.0:
+		await get_tree().create_timer(delay).timeout;
+	
 	var random = global_position + Vector3(randf_range(-10.0, 10.0), 0, randf_range(-10.0, 10.0));
 	var closest = NavigationServer3D.map_get_closest_point(get_world_3d().navigation_map, random);
 	navigate_to(closest);
@@ -126,21 +143,15 @@ func walk_random():
 func handle_flash(source_position: Vector3):
 	var angle = get_face_angle_to_position(source_position);
 	var ratio = abs(angle) / PI;
-	# print(ratio);
-	# if ratio > 0.75:
-	#	set_shaded(false);
-	#	deal_damage();
-	#elif ratio > 0.5:
-	# 	falter_shade(0.1);
-	
-func deal_damage():
-	nav_paused = true;
-	play_animation("hurt");
+	if ratio > 0.80 and health < 5:
+		queue_free();
+	else:
+		deal_damage(10);
 
 func choose_flipped_sprite_suffix(flip: bool, a: String, b: String):
 	if sprite_mirrored:
 		sprite.flip_h = flip;
-		shadeSprite.flip_h = flip;
+		invisibleSprite.flip_h = flip;
 		return a + "_" + b;
 	else:
 		return b if flip else a
@@ -185,11 +196,11 @@ func _process(_delta):
 		anim_speed = curr_speed / get_speed();
 		if anim_speed == 0.0:
 			sprite.set_frame_and_progress(1, 0);
-			shadeSprite.set_frame_and_progress(1, 0);
+			invisibleSprite.set_frame_and_progress(1, 0);
 	elif curr_anim_prefix == "attack":
 		anim_speed = 2;
 	sprite.speed_scale = anim_speed;
-	shadeSprite.speed_scale = anim_speed;
+	invisibleSprite.speed_scale = anim_speed;
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -206,6 +217,8 @@ func _physics_process(delta):
 			var to_target =  target - global_position;
 			to_target.y = 0;
 			velocity = to_target.normalized() * get_speed();
+			if dissolve.is_emitting():
+				velocity *= 0.5;
 	
 	check_player_target();
 	
@@ -213,10 +226,10 @@ func _physics_process(delta):
 		has_last_known_target_position = false;
 		navigate_to(last_known_target_position);
 	
-	move_and_slide()
+	move_and_slide();
 
 func check_player_target():
-	if abs(angle_to_player) <= PI * 6 * EIGHTH:
+	if abs(angle_to_player) <= PI * 5 * EIGHTH:
 		return;
 		
 	var space_state = get_parent().get_world_3d().direct_space_state;
@@ -249,14 +262,14 @@ func play_animation(prefix: String):
 	var full_anim_name = prefix + "_" + curr_anim_suffix;
 	if sprite.sprite_frames.has_animation(full_anim_name):
 		sprite.play(full_anim_name);
-	if shadeSprite.sprite_frames.has_animation(full_anim_name):
-		shadeSprite.play(full_anim_name);
+	if invisibleSprite.sprite_frames.has_animation(full_anim_name):
+		invisibleSprite.play(full_anim_name);
 
 func get_speed():
 	if player_target:
-		return 4;
-	else:
 		return 6;
+	else:
+		return 4;
 
 func attack(player: Player):
 	is_attacking = true;
@@ -274,7 +287,9 @@ func serialize():
 		"is_attacking": is_attacking,
 		"player_target": null if player_target == null else player_target.get_path(),
 		"has_last_known_target_position": has_last_known_target_position,
-		"last_known_target_position": last_known_target_position
+		"last_known_target_position": last_known_target_position,
+		"dissolve_prev_amount": dissolve.prev_amount,
+		"dissolve_curr_amount": dissolve.curr_amount
 	}
 
 func deserialize(data):
@@ -285,4 +300,6 @@ func deserialize(data):
 	is_attacking = data.is_attacking;
 	player_target = null if !data.player_target else get_node(data.player_target);
 	has_last_known_target_position = data.has_last_known_target_position;
-	last_known_target_position = data.last_known_target_position;	
+	last_known_target_position = data.last_known_target_position;
+	dissolve.prev_amount = data.dissolve_prev_amount;
+	dissolve.curr_amount = data.dissolve_curr_amount;

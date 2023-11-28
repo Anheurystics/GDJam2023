@@ -13,7 +13,7 @@ dest_files=["res://.godot/imported/RussoOne-Regular.ttf-e9aa3ee0e73669fd8d1f3678
 [params]
 
 Rendering=null
-antialiasing=1
+antialiasing=0
 generate_mipmaps=false
 multichannel_signed_distance_field=false
 msdf_pixel_range=8

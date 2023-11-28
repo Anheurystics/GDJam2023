@@ -30,7 +30,6 @@ script = ExtResource("3_6xni1")
 script = ExtResource("4_ahxwq")
 
 [node name="Flashlight" type="SpotLight3D" parent="."]
-visible = false
 light_energy = 15.0
 shadow_enabled = true
 spot_range = 20.0

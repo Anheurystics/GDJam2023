@@ -41,7 +41,7 @@ func take_picture():
 	# var screen: Sprite3D = get_node("../../Screen");
 	# screen.texture = ImageTexture.create_from_image(viewfinder.texture.get_image());
 	# screen.scale = Vector3.ONE / camera_res;
-	await get_tree().create_timer(0.10).timeout;
+	await get_tree().create_timer(0.50).timeout;
 	set_flash_enabled(false);
 
 	var space_state = get_parent().get_world_3d().direct_space_state;
@@ -50,6 +50,7 @@ func take_picture():
 	sphere_query.collide_with_areas = false;
 	sphere_query.collide_with_bodies = true;
 	sphere_query.collision_mask = 4;
+	sphere_query.transform.origin = get_viewport().get_camera_3d().global_position;
 	
 	var sphere_shape = SphereShape3D.new();
 	sphere_shape.radius = 5;

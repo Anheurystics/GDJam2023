@@ -13,7 +13,8 @@ func _ready():
 	add_child(attack_timer);
 	
 	set_shaded(false);
-	walk_random();
+	$Sprite.cast_shadow = false;
+	walk_random(0.0);
 
 func _process(delta):
 	super._process(delta);

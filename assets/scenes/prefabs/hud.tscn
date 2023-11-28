@@ -9,7 +9,7 @@ viewport_path = NodePath("SubViewport")
 
 [sub_resource type="LabelSettings" id="LabelSettings_wnjj6"]
 font = ExtResource("3_jaidu")
-font_size = 32
+font_size = 48
 
 [node name="HUD" type="CanvasLayer"]
 layer = 2
@@ -50,25 +50,30 @@ texture_repeat = 1
 position = Vector2(-44, -118)
 texture = SubResource("ViewportTexture_n728b")
 
-[node name="Stats" type="VBoxContainer" parent="Root"]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 237.0
-offset_bottom = 168.0
-
-[node name="HP" type="Label" parent="Root/Stats"]
+[node name="HP" type="Label" parent="Root"]
 layout_mode = 2
+offset_left = 125.0
+offset_top = 566.0
+offset_right = 303.0
+offset_bottom = 628.0
 text = "HP: 100"
 label_settings = SubResource("LabelSettings_wnjj6")
 
-[node name="Camera" type="Label" parent="Root/Stats"]
+[node name="Camera" type="Label" parent="Root"]
 layout_mode = 2
+offset_left = 343.0
+offset_top = 566.0
+offset_right = 633.0
+offset_bottom = 628.0
 text = "Camera: 100"
 label_settings = SubResource("LabelSettings_wnjj6")
 
-[node name="Flashlight" type="Label" parent="Root/Stats"]
+[node name="Flashlight" type="Label" parent="Root"]
 layout_mode = 2
+offset_left = 673.0
+offset_top = 566.0
+offset_right = 1027.0
+offset_bottom = 628.0
 text = "Flashlight: 100"
 label_settings = SubResource("LabelSettings_wnjj6")
 
@@ -81,3 +86,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 0, 0, 0.392157)
+
+[node name="Log" type="VBoxContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 32.0
+offset_top = 32.0

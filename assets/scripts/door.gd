@@ -19,8 +19,15 @@ func set_open(p_open: bool, interactor: Interactor):
 	
 	if p_open && locked:
 		var player: Player = interactor.get_parent() as Player;
-		if player && player.owned_keys.has(required_key):
-			locked = false;
+		if player:
+			var key_index = player.owned_keys.find(required_key);
+			if key_index >= 0:
+				player.log_message("Used " + player.owned_keys[key_index]);
+				player.owned_keys.remove_at(key_index);
+				locked = false;
+			else:
+				player.log_message(required_key + " is required");
+				return;
 		else:
 			return;
 
