@@ -1,12 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://dr1wshbq5jsvr"]
+[gd_scene load_steps=6 format=3 uid="uid://dr1wshbq5jsvr"]
 
 [ext_resource type="Texture2D" uid="uid://bej7w5nw8fly5" path="res://assets/textures/camera.png" id="1_kvn77"]
 [ext_resource type="Script" path="res://assets/scripts/hud.gd" id="1_xanai"]
+[ext_resource type="FontFile" uid="uid://c0cigvpheh32u" path="res://assets/RussoOne-Regular.ttf" id="3_jaidu"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_n728b"]
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="LabelSettings" id="LabelSettings_wnjj6"]
+font = ExtResource("3_jaidu")
 font_size = 32
 
 [node name="HUD" type="CanvasLayer"]

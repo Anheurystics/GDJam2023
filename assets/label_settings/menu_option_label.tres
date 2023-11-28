@@ -1,0 +1,10 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://o8jpoelgs7t5"]
+
+[ext_resource type="FontFile" uid="uid://c0cigvpheh32u" path="res://assets/RussoOne-Regular.ttf" id="1_psn8s"]
+
+[resource]
+line_spacing = 0.0
+font = ExtResource("1_psn8s")
+font_color = Color(0.290196, 0.0941176, 0.0392157, 1)
+outline_size = 6
+outline_color = Color(0.180392, 0.0470588, 0.0156863, 1)
