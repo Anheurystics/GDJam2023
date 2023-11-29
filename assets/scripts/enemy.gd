@@ -137,8 +137,7 @@ func walk_random(delay: float):
 		await get_tree().create_timer(delay).timeout;
 	
 	var random = global_position + Vector3(randf_range(-10.0, 10.0), 0, randf_range(-10.0, 10.0));
-	var closest = NavigationServer3D.map_get_closest_point(get_world_3d().navigation_map, random);
-	navigate_to(closest);
+	navigate_to(random);
 
 func handle_flash(source_position: Vector3):
 	var angle = get_face_angle_to_position(source_position);
@@ -254,8 +253,9 @@ func check_player_target():
 		player_target = null;
 
 func navigate_to(target: Vector3):
+	var closest = NavigationServer3D.map_get_closest_point(get_world_3d().navigation_map, target);
 	nav_agent.target_desired_distance = 2.0;
-	nav_agent.target_position = target;
+	nav_agent.target_position = closest;
 
 func play_animation(prefix: String):
 	curr_anim_prefix = prefix;

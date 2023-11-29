@@ -1,7 +1,8 @@
 class_name Shade extends Enemy
 
-var is_following_player: bool = false;
+@export var wander_on_start: bool = true;
 
+var is_following_player: bool = false;
 var attack_timer: Timer;
 
 func _ready():
@@ -14,7 +15,9 @@ func _ready():
 	
 	set_shaded(false);
 	$Sprite.cast_shadow = false;
-	walk_random(0.0);
+
+	if wander_on_start:
+		walk_random(0.0);
 
 func _process(delta):
 	super._process(delta);
