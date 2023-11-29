@@ -15,7 +15,6 @@ var battery: float = 100; # Flashlight
 var memory: int = 5; # Camera
 
 @onready var flashlight: SpotLight3D = $Flashlight;
-@onready var flashlight_raycast: RayCast3D = $Flashlight/RayCast3D;
 @onready var interactor: Interactor = $Interactor;
 @onready var snapshot: Snapshot = $Snapshot;
 
