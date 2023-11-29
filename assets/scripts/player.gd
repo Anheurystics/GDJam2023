@@ -39,7 +39,7 @@ func _ready():
 	flashlight_sphere_query.collision_mask = 4;
 	
 	var sphere_shape = SphereShape3D.new();
-	sphere_shape.radius = 6;
+	sphere_shape.radius = 12;
 	flashlight_sphere_query.shape = sphere_shape;
 
 func _process(delta):
@@ -93,7 +93,8 @@ func check_flashlight_damage(delta):
 				var to_enemy = enemy_ray_query.to - enemy_ray_query.from;
 				var ratio = acos(to_enemy.normalized().dot(global_transform.basis.z)) / PI;
 				if ratio > 0.8:
-					enemy.deal_damage(5 * ((ratio - 0.8) / 0.2) * delta);
+					var att = 1.0 - (to_enemy.length() / 12.0);
+					enemy.deal_damage(5 * ((ratio - 0.8) / 0.2) * att * delta, self);
 
 func _physics_process(delta):
 	if health <= 0:

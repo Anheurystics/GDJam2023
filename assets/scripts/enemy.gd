@@ -105,9 +105,11 @@ func _on_nav_agent_link_reached(details):
 func _on_nav_agent_navigation_finished():
 	walk_random(1.0);
 
-func deal_damage(value: float):
+func deal_damage(value: float, player: Player):
 	health = max(0, health - value);
 	dissolve.set_dissolve_amount(1.0 - (float(health) / max_health));
+	if !player_target && player:
+		player_target = player;
 
 func load_sprite_frames(anim_prefix: String, prefix: String, frames: Array, loop: bool):
 	if frames.is_empty():
@@ -139,13 +141,13 @@ func walk_random(delay: float):
 	var random = global_position + Vector3(randf_range(-10.0, 10.0), 0, randf_range(-10.0, 10.0));
 	navigate_to(random);
 
-func handle_flash(source_position: Vector3):
+func handle_flash(source_position: Vector3, player: Player):
 	var angle = get_face_angle_to_position(source_position);
 	var ratio = abs(angle) / PI;
 	if ratio > 0.80 and health < 5:
 		queue_free();
 	else:
-		deal_damage(10);
+		deal_damage(10, player);
 
 func choose_flipped_sprite_suffix(flip: bool, a: String, b: String):
 	if sprite_mirrored:

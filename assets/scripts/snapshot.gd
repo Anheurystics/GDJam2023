@@ -41,7 +41,7 @@ func take_picture():
 	# var screen: Sprite3D = get_node("../../Screen");
 	# screen.texture = ImageTexture.create_from_image(viewfinder.texture.get_image());
 	# screen.scale = Vector3.ONE / camera_res;
-	await get_tree().create_timer(0.50).timeout;
+	await get_tree().create_timer(0.10).timeout;
 	set_flash_enabled(false);
 
 	var space_state = get_parent().get_world_3d().direct_space_state;
@@ -68,7 +68,7 @@ func take_picture():
 			
 			var enemy_result = space_state.intersect_ray(enemy_ray_query);
 			if enemy == enemy_result.collider:
-				enemy.handle_flash(get_viewport().get_camera_3d().global_position);
+				enemy.handle_flash(get_viewport().get_camera_3d().global_position, get_parent() as Player);
 
 func set_flash_enabled(enabled: bool):
 	flash.visible = enabled;
