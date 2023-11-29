@@ -4,21 +4,28 @@ const SPEED = 4.0
 const SPRINT_SPEED = 8.0
 const ADS_SPEED = 4.0
 const JUMP_VELOCITY = 4.5
-const FLASHLIGHT_DRAIN_RATE = 5;
-const FLASHLIGHT_REGEN_RATE = 1;
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-var health: float = 100; # HP
-var battery: float = 100; # Flashlight
-var memory: int = 5; # Camera
+@export var max_base_health = 100;
+@export var max_over_health = 200;
+@export var over_health_decay = 2;
+@export var max_battery = 100;
+@export var max_memory = 10;
+
+@export var flashlight_drain_rate = 5;
+@export var flashlight_regen_rate = 0.5;
+
+@onready var health: float = max_base_health; # HP
+@onready var battery: float = max_battery; # Flashlight
+@onready var memory: int = max_memory / 2; # Camera
 
 @onready var flashlight: SpotLight3D = $Flashlight;
 @onready var interactor: Interactor = $Interactor;
 @onready var snapshot: Snapshot = $Snapshot;
 
-signal health_changed(old: float, new: float);
+signal health_changed(old: float, new: float, show_flash: bool);
 signal battery_changed(old: float, new: float);
 signal memory_changed(old: int, new: int);
 signal message_logged(message: String);
@@ -27,7 +34,7 @@ var owned_keys: PackedStringArray = [];
 
 var flashlight_sphere_query: PhysicsShapeQueryParameters3D;
 
-func _ready():
+func _ready():	
 	# Call these to initialize HUD values
 	modify_health(0);
 	modify_battery(0);
@@ -61,11 +68,11 @@ func _process(delta):
 		flashlight.visible = false;
 	
 	if flashlight.visible:
-		modify_battery(-FLASHLIGHT_DRAIN_RATE * delta);
+		modify_battery(-flashlight_drain_rate * delta);
 		if battery <= 0:
 			flashlight.visible = false;
 	else:
-		modify_battery(FLASHLIGHT_REGEN_RATE * delta);
+		modify_battery(flashlight_regen_rate * delta);
 	
 	if Input.is_action_just_pressed("take_picture") and snapshot.camera_raised and memory > 0:
 		snapshot.take_picture();
@@ -73,6 +80,11 @@ func _process(delta):
 	
 	if flashlight.visible:
 		check_flashlight_damage(delta);
+
+	if health > max_base_health:
+		var decay = health - max(health - (over_health_decay * delta), max_base_health);
+		if decay > 0:
+			modify_health(-decay, false);
 
 func check_flashlight_damage(delta):
 	var space_state = get_parent().get_world_3d().direct_space_state;
@@ -128,16 +140,22 @@ func _physics_process(delta):
 
 	move_and_slide()
 
-func modify_health(amount: float):
+func can_pickup_health():
+	return health < max_over_health;
+
+func modify_health(amount: float, show_flash: bool = true):
 	var old = health;
-	health = clamp(health + amount, 0, 100);
-	health_changed.emit(old, health);
+	health = clamp(health + amount, 0, max_over_health);
+	health_changed.emit(old, health, show_flash);
 	
 	if health <= 0:
 		var tween = get_tree().create_tween();
 		tween.set_parallel(true);
 		tween.tween_property($Camera3D, "position:y", 0, 0.8);
 		tween.tween_property($Camera3D, "rotation:y", PI/2, 0.8);
+
+func can_pickup_battery():
+	return battery < 100;
 
 func modify_battery(amount: float):
 	var old = battery

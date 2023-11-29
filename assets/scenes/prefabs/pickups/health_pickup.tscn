@@ -2,10 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://batx7p3gidgth" path="res://assets/scenes/prefabs/pickup.tscn" id="1_hyrfd"]
 [ext_resource type="Script" path="res://assets/scripts/pickups/health_pickup.gd" id="2_2oq3f"]
-[ext_resource type="Texture2D" uid="uid://dtnf7tckgepc4" path="res://assets/freedoom/sprites/ammoa0.png" id="3_4jslc"]
+[ext_resource type="Texture2D" uid="uid://dxaswna327ckt" path="res://assets/freedoom/sprites/bon1a0.png" id="3_x6bxw"]
 
 [node name="HealthPickup" instance=ExtResource("1_hyrfd")]
 script = ExtResource("2_2oq3f")
+health_amount = 10
 
 [node name="Sprite" parent="." index="1"]
-texture = ExtResource("3_4jslc")
+texture = ExtResource("3_x6bxw")

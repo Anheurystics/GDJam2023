@@ -28,14 +28,15 @@ func _ready():
 	player.battery_changed.connect(_on_battery_changed);
 	player.message_logged.connect(_on_message_logged);
 
-func _on_health_changed(old_health: float, new_health: float):
+func _on_health_changed(old_health: float, new_health: float, show_flash: bool):
 	hp.text = "HP: " + str(floori(new_health));
 	if new_health <= 0:
 		flash_death();
-	elif new_health > old_health:
-		flash_overlay(HEAL_COLOR);
-	elif new_health < old_health:
-		flash_overlay(DAMAGE_COLOR);
+	elif show_flash:
+		if new_health > old_health:
+			flash_overlay(HEAL_COLOR);
+		elif new_health < old_health:
+			flash_overlay(DAMAGE_COLOR);
 		
 func flash_overlay(color: Color, duration: float = 0.2):
 	color_overlay.visible = true;
