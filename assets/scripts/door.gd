@@ -1,3 +1,4 @@
+@tool
 class_name Door extends StaticBody3D
 
 var open: bool = false;
@@ -9,6 +10,15 @@ var locked = false;
 func _ready():
 	if required_key != "":
 		locked = true;
+	update_sprite();
+	visibility_changed.connect(update_sprite);
+
+func update_sprite():
+	if required_key == "":
+		return;
+	var tex = load("res://assets/freedoom/sprites/" + required_key + ".png");
+	$Visual/KeyIconFront.texture = tex;
+	$Visual/KeyIconBack.texture = tex;
 
 func toggle_open(interactor: Interactor):
 	set_open(!open, interactor);
@@ -22,11 +32,11 @@ func set_open(p_open: bool, interactor: Interactor):
 		if player:
 			var key_index = player.owned_keys.find(required_key);
 			if key_index >= 0:
-				player.log_message("Used " + player.owned_keys[key_index]);
+				player.log_message("Door unlocked!");
 				player.owned_keys.remove_at(key_index);
 				locked = false;
 			else:
-				player.log_message(required_key + " is required");
+				player.log_message("Door is locked");
 				return;
 		else:
 			return;

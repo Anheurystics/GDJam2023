@@ -10,9 +10,6 @@ size = Vector3(1, 1, 0.005)
 [node name="Door" type="StaticBody3D" groups=["persist"]]
 input_ray_pickable = false
 script = ExtResource("1_mmuil")
-can_enemy_open = null
-can_only_open = null
-required_key = null
 
 [node name="Interactable" type="Node" parent="."]
 script = ExtResource("2_j3i77")
@@ -40,6 +37,18 @@ shaded = true
 double_sided = false
 texture_filter = 0
 texture = ExtResource("1_g0lde")
+
+[node name="KeyIconFront" type="Sprite3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.3)
+pixel_size = 0.04
+shaded = true
+texture_filter = 0
+
+[node name="KeyIconBack" type="Sprite3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3)
+pixel_size = 0.04
+shaded = true
+texture_filter = 0
 
 [node name="NavigationLink3D" type="NavigationLink3D" parent="."]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, -2.5, 0)

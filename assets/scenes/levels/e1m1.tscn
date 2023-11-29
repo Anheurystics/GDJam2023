@@ -253,7 +253,7 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -12.5,
 
 [node name="Door2" parent="Navigable" instance=ExtResource("3_l8byn")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.5, 2.5, 0)
-required_key = "Common Key"
+required_key = "bkeya0"
 
 [node name="Door3" parent="Navigable" instance=ExtResource("3_l8byn")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.5, 2.5, 20)
@@ -344,7 +344,7 @@ wander_on_start = false
 
 [node name="Key" parent="." instance=ExtResource("19_t30pm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.6199, 0.0125001, 11.1026)
-key_id = "Common Key"
+key_id = "bkeya0"
 
 [node name="HealthPickup" parent="." instance=ExtResource("18_abmkn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0.5, 15.5)
