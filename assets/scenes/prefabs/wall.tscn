@@ -1,15 +1,12 @@
-[gd_scene load_steps=10 format=3 uid="uid://c04pqd4cv3gov"]
+[gd_scene load_steps=8 format=3 uid="uid://c04pqd4cv3gov"]
 
 [ext_resource type="Script" path="res://assets/scripts/wall_autotile.gd" id="1_pe20c"]
-[ext_resource type="Texture2D" uid="uid://b7hqwj3he5mel" path="res://assets/freedoom/patches/wall40_1.png" id="1_tnm5o"]
-[ext_resource type="Texture2D" uid="uid://djat18o0h12yh" path="res://assets/freedoom/patches/aqsupp01.png" id="2_j5fbs"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l3rpt"]
 size = Vector3(1, 1, 0.25)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e613s"]
 resource_local_to_scene = true
-albedo_texture = ExtResource("1_tnm5o")
 metallic_specular = 0.0
 texture_filter = 0
 
@@ -17,12 +14,10 @@ texture_filter = 0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rqwua"]
 resource_local_to_scene = true
-albedo_texture = ExtResource("1_tnm5o")
 metallic_specular = 0.0
 texture_filter = 0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4j70l"]
-albedo_texture = ExtResource("2_j5fbs")
 texture_filter = 0
 
 [sub_resource type="QuadMesh" id="QuadMesh_lxpyr"]
@@ -45,16 +40,16 @@ material_override = SubResource("StandardMaterial3D_rqwua")
 mesh = SubResource("QuadMesh_pbbap")
 
 [node name="SideA" type="MeshInstance3D" parent="."]
-transform = Transform3D(-5.46392e-08, 0, 1.25, 0, 5, 0, -1.25, 0, -5.46392e-08, 2.49729, 0, 0)
+transform = Transform3D(-5.46392e-08, 0, 1.25, 0, 5, 0, -1.25, 0, -5.46392e-08, 2.5, 0, 0)
 material_override = SubResource("StandardMaterial3D_4j70l")
 mesh = SubResource("QuadMesh_lxpyr")
 
 [node name="SideB" type="MeshInstance3D" parent="."]
-transform = Transform3D(-5.46392e-08, -5, -5.46392e-08, 0, -2.18557e-07, 1.25, -1.25, 2.18557e-07, 2.38836e-15, -0.00270653, 2.5, 0)
+transform = Transform3D(-5.46392e-08, -5, -5.46392e-08, 0, -2.18557e-07, 1.25, -1.25, 2.18557e-07, 2.38836e-15, 0, 2.5, 0)
 material_override = SubResource("StandardMaterial3D_4j70l")
 mesh = SubResource("QuadMesh_lxpyr")
 
 [node name="SideC" type="MeshInstance3D" parent="."]
-transform = Transform3D(-5.46392e-08, 0, -1.25, 0, 5, 0, 1.25, 0, -5.46392e-08, -2.50271, 0, 0)
+transform = Transform3D(-5.46392e-08, 0, -1.25, 0, 5, 0, 1.25, 0, -5.46392e-08, -2.5, 0, 0)
 material_override = SubResource("StandardMaterial3D_4j70l")
 mesh = SubResource("QuadMesh_lxpyr")
