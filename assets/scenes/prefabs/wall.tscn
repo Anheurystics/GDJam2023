@@ -22,7 +22,7 @@ texture_filter = 0
 texture = ExtResource("1_tnm5o")
 
 [node name="Face2" type="Sprite3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -0.625)
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, -0.625)
 pixel_size = 0.0391
 transparent = false
 shaded = true
