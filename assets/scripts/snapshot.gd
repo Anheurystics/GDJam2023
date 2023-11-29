@@ -37,6 +37,7 @@ func set_camera_res(res: float):
 	hud.viewfinder.apply_scale(Vector2.ONE / res);
 
 func take_picture():
+	$SFX.play();
 	set_flash_enabled(true);
 	# var screen: Sprite3D = get_node("../../Screen");
 	# screen.texture = ImageTexture.create_from_image(viewfinder.texture.get_image());

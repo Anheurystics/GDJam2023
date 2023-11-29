@@ -1,8 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://c565t4dda2qg4"]
+[gd_scene load_steps=10 format=3 uid="uid://c565t4dda2qg4"]
 
 [ext_resource type="Script" path="res://assets/scripts/player.gd" id="1_45euq"]
 [ext_resource type="Script" path="res://assets/scripts/interactor.gd" id="3_6xni1"]
+[ext_resource type="AudioStream" uid="uid://c6uqon32os2xs" path="res://assets/freedoom/sounds/dspdiehi.wav" id="3_tabtn"]
+[ext_resource type="AudioStream" uid="uid://cagk3qkavpre8" path="res://assets/freedoom/sounds/dsplpain.wav" id="4_1cqe3"]
 [ext_resource type="Script" path="res://assets/scripts/snapshot.gd" id="4_ahxwq"]
+[ext_resource type="AudioStream" uid="uid://csmq7573bvvg3" path="res://assets/sfx/camera-13695.mp3" id="4_pd6tc"]
+[ext_resource type="AudioStream" uid="uid://dkdb6y7r1p4l" path="res://assets/sfx/flashlight-clicking-on-105809.mp3" id="5_1yaxi"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8gtp5"]
 
@@ -26,8 +30,19 @@ environment = SubResource("Environment_bg6b4")
 [node name="Interactor" type="Node3D" parent="."]
 script = ExtResource("3_6xni1")
 
+[node name="SFX" type="Node3D" parent="."]
+
+[node name="Death" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("3_tabtn")
+
+[node name="Pain" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("4_1cqe3")
+
 [node name="Snapshot" type="Node" parent="."]
 script = ExtResource("4_ahxwq")
+
+[node name="SFX" type="AudioStreamPlayer" parent="Snapshot"]
+stream = ExtResource("4_pd6tc")
 
 [node name="Flashlight" type="SpotLight3D" parent="."]
 visible = false
@@ -35,3 +50,6 @@ light_energy = 15.0
 shadow_enabled = true
 spot_range = 20.0
 spot_angle = 35.0
+
+[node name="SFX" type="AudioStreamPlayer" parent="Flashlight"]
+stream = ExtResource("5_1yaxi")

@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://buo80p043s8vx"]
+[gd_scene load_steps=7 format=3 uid="uid://buo80p043s8vx"]
 
 [ext_resource type="Script" path="res://assets/scripts/enemy.gd" id="1_54rww"]
 [ext_resource type="Material" uid="uid://cljeq7tk2vtjf" path="res://assets/custom_sprite_3d.material" id="2_d5878"]
 [ext_resource type="Script" path="res://assets/scripts/interactor.gd" id="2_r607x"]
+[ext_resource type="AudioStream" uid="uid://g1afvhbbk1ho" path="res://assets/freedoom/sounds/dsradio_loop.wav" id="3_lppot"]
 [ext_resource type="Script" path="res://assets/scripts/dissolve.gd" id="4_ndruh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8gtp5"]
@@ -45,6 +46,9 @@ visibility_range_end = 0.0
 visibility_range_end_margin = 0.0
 visibility_range_fade_mode = 0
 script = ExtResource("4_ndruh")
+
+[node name="SFX" type="AudioStreamPlayer3D" parent="Dissolve"]
+stream = ExtResource("3_lppot")
 
 [node name="Collision" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_8gtp5")

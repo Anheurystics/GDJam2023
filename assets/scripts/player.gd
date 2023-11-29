@@ -63,6 +63,7 @@ func _process(delta):
 		
 	if Input.is_action_just_pressed("flashlight"):
 		flashlight.visible = !flashlight.visible;
+		flashlight.find_child("SFX").play();
 	
 	if battery == 0:
 		flashlight.visible = false;
@@ -143,16 +144,23 @@ func _physics_process(delta):
 func can_pickup_health():
 	return health < max_over_health;
 
-func modify_health(amount: float, show_flash: bool = true):
+func modify_health(amount: float, play_effects: bool = true):
+	if health <= 0:
+		return;
+
 	var old = health;
 	health = clamp(health + amount, 0, max_over_health);
-	health_changed.emit(old, health, show_flash);
+	health_changed.emit(old, health, play_effects);
 	
 	if health <= 0:
+		$SFX/Death.play();
 		var tween = get_tree().create_tween();
 		tween.set_parallel(true);
 		tween.tween_property($Camera3D, "position:y", 0, 0.8);
 		tween.tween_property($Camera3D, "rotation:y", PI/2, 0.8);
+	elif amount < 0:
+		if play_effects:
+			$SFX/Pain.play();
 
 func can_pickup_battery():
 	return battery < 100;

@@ -24,6 +24,11 @@ func set_dissolve_amount(amount: float):
 
 func _process(delta):
 	particles.emitting = prev_amount != curr_amount;
+	if particles.emitting != $SFX.playing:
+		if $SFX.playing:
+			$SFX.stop();
+		else:
+			$SFX.play();
 	prev_amount = curr_amount;
 
 func is_emitting():
