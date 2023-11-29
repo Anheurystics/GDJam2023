@@ -1,21 +1,27 @@
-[gd_scene load_steps=3 format=3 uid="uid://mt8vumqp3wne"]
+[gd_scene load_steps=6 format=3 uid="uid://mt8vumqp3wne"]
 
+[ext_resource type="Script" path="res://assets/scripts/floor_autotile.gd" id="1_uuavi"]
 [ext_resource type="Texture2D" uid="uid://ddwiyct4wuxaa" path="res://assets/freedoom/flats/floor7_1.png" id="1_vtbgi"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l3rpt"]
 size = Vector3(1, 1, 0.005)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8vtq2"]
+resource_local_to_scene = true
+albedo_texture = ExtResource("1_vtbgi")
+metallic_specular = 0.0
+texture_filter = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_usel2"]
+
 [node name="Floor" type="StaticBody3D"]
+script = ExtResource("1_uuavi")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(5, 0, 0, 0, -2.18557e-07, -5, 0, 5, -2.18557e-07, 0, 0, 0)
 shape = SubResource("BoxShape3D_l3rpt")
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
-pixel_size = 0.0782
-transparent = false
-shaded = true
-double_sided = false
-texture_filter = 0
-texture = ExtResource("1_vtbgi")
+[node name="Sprite3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, -2.18557e-07, 5, 0, -5, -2.18557e-07, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_8vtq2")
+mesh = SubResource("QuadMesh_usel2")
