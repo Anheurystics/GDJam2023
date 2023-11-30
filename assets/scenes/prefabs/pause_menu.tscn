@@ -1,0 +1,97 @@
+[gd_scene load_steps=6 format=3 uid="uid://dy8uambrrk7kh"]
+
+[ext_resource type="Script" path="res://assets/scripts/pause_menu.gd" id="1_6ut46"]
+[ext_resource type="FontFile" uid="uid://c0cigvpheh32u" path="res://assets/RussoOne-Regular.ttf" id="2_hi3jv"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_p2ay5"]
+font = ExtResource("2_hi3jv")
+font_size = 64
+
+[sub_resource type="LabelSettings" id="LabelSettings_1hojp"]
+font = ExtResource("2_hi3jv")
+font_size = 32
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bnhii"]
+
+[node name="PauseMenu" type="CanvasLayer"]
+process_mode = 3
+layer = 2
+script = ExtResource("1_6ut46")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.588235)
+
+[node name="Label" type="Label" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -132.0
+offset_top = 34.0
+offset_right = 132.0
+offset_bottom = 115.0
+grow_horizontal = 2
+text = "PAUSED"
+label_settings = SubResource("LabelSettings_p2ay5")
+
+[node name="Controls" type="Label" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -412.0
+offset_top = 128.0
+offset_right = -27.0
+offset_bottom = 422.0
+grow_horizontal = 2
+text = "Movement - W/A/S/D
+Turning - Left/Right
+Sprint - Left Shift
+Aim Camera - Left Ctrl
+Shoot Camera - Space
+Interact - E
+Flashlight - F
+"
+label_settings = SubResource("LabelSettings_1hojp")
+
+[node name="Controls2" type="Label" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 38.0
+offset_top = 127.0
+offset_right = 423.0
+offset_bottom = 379.0
+grow_horizontal = 2
+text = "Quick Save - F5
+Quick Load - F6"
+label_settings = SubResource("LabelSettings_1hojp")
+
+[node name="ExitButton" type="Button" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -297.5
+offset_top = -99.0
+offset_right = 297.5
+offset_bottom = -13.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_hover_color = Color(0.654902, 0.654902, 0.654902, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.435294, 0.435294, 0.435294, 1)
+theme_override_colors/font_outline_color = Color(0.258824, 0.129412, 0, 1)
+theme_override_constants/outline_size = 16
+theme_override_fonts/font = ExtResource("2_hi3jv")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/focus = SubResource("StyleBoxEmpty_bnhii")
+text = "RETURN TO MENU"
+flat = true

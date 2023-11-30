@@ -1,7 +1,7 @@
 extends VBoxContainer
 
-@onready var new_game_button: Button = $NewGame/NewGameButton;
-@onready var continue_button: Button = $Continue/ContinueButton;
+@onready var new_game_button: Button = $NewGameButton;
+@onready var continue_button: Button = $ContinueButton;
 
 func _ready():
 	LevelManager.current_level = -1;

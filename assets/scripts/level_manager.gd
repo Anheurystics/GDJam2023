@@ -10,7 +10,7 @@ func load_next_level(p_persist: bool):
 	if current_level < levels.size():
 		get_tree().change_scene_to_file("res://assets/scenes/levels/" + levels[current_level] + ".tscn");
 	else:
-		get_tree().change_scene_to_file("res://assets/scenes/levels/menu.tscn");
+		load_menu();
 
 func load_level(name: String):
 	current_level = levels.find(name);
@@ -19,3 +19,7 @@ func load_level(name: String):
 
 func get_current_level_name():
 	return levels[current_level];
+
+func load_menu():
+	get_tree().change_scene_to_file("res://assets/scenes/levels/menu.tscn");
+	

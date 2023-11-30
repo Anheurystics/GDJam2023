@@ -1,10 +1,10 @@
-[gd_scene load_steps=29 format=3 uid="uid://52v44ycyvkxu"]
+[gd_scene load_steps=28 format=3 uid="uid://52v44ycyvkxu"]
 
 [ext_resource type="Script" path="res://assets/scripts/level.gd" id="1_q6588"]
 [ext_resource type="PackedScene" uid="uid://dr1wshbq5jsvr" path="res://assets/scenes/prefabs/hud.tscn" id="2_d8mi3"]
 [ext_resource type="PackedScene" uid="uid://c565t4dda2qg4" path="res://assets/scenes/prefabs/player.tscn" id="3_x55ql"]
 [ext_resource type="Script" path="res://assets/scripts/camera_follow.gd" id="4_8fvq6"]
-[ext_resource type="Script" path="res://assets/scripts/pause_menu.gd" id="5_v3xis"]
+[ext_resource type="PackedScene" uid="uid://dy8uambrrk7kh" path="res://assets/scenes/prefabs/pause_menu.tscn" id="5_2ynr2"]
 [ext_resource type="PackedScene" uid="uid://c0g74hh3iw64x" path="res://assets/scenes/prefabs/ceiling.tscn" id="6_tyehv"]
 [ext_resource type="Texture2D" uid="uid://8q4s2infobh8" path="res://assets/freedoom/flats/ceil5_1.png" id="7_1c4xw"]
 [ext_resource type="NavigationMesh" uid="uid://cl86pf835y6w7" path="res://assets/scenes/levels/e1m2_navmesh.tres" id="9_vddnp"]
@@ -26,9 +26,6 @@
 [ext_resource type="PackedScene" uid="uid://da4ddqhqshu7k" path="res://assets/scenes/prefabs/exit.tscn" id="24_utnhr"]
 [ext_resource type="PackedScene" uid="uid://du10p273fvgjk" path="res://assets/scenes/prefabs/pickups/battery_pickup.tscn" id="26_23o5p"]
 [ext_resource type="PackedScene" uid="uid://dckiyx2a8ggks" path="res://assets/scenes/prefabs/pickups/health_pickup.tscn" id="27_6sxgf"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_p2ay5"]
-font_size = 64
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1lgeg"]
 load_path = "res://.godot/imported/wall69_4.png-e89d4539a86117978318298ffdb33bcf.s3tc.ctex"
@@ -61,35 +58,8 @@ shadow_blur = 0.2
 spot_range = 15.0
 spot_angle = 70.0
 
-[node name="PauseMenu" type="CanvasLayer" parent="."]
-process_mode = 3
-layer = 2
+[node name="PauseMenu" parent="." instance=ExtResource("5_2ynr2")]
 visible = false
-script = ExtResource("5_v3xis")
-
-[node name="ColorRect" type="ColorRect" parent="PauseMenu"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.588235)
-
-[node name="Label" type="Label" parent="PauseMenu/ColorRect"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -31.0
-offset_top = -13.0
-offset_right = 31.0
-offset_bottom = 13.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "PAUSED"
-label_settings = SubResource("LabelSettings_p2ay5")
 
 [node name="Ceilings" type="Node3D" parent="."]
 

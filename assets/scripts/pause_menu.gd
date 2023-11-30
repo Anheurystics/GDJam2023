@@ -2,6 +2,11 @@ extends CanvasLayer
 
 var is_paused: bool = false;
 
+@onready var exit_button = $ColorRect/ExitButton;
+
+func _ready():
+	exit_button.pressed.connect(LevelManager.load_menu);
+
 func _input(event):
 	if event.is_action_pressed("pause"):
 		toggle_pause()

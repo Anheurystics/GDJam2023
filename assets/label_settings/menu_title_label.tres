@@ -6,9 +6,9 @@
 line_spacing = 0.0
 font = ExtResource("1_qlxrh")
 font_size = 48
-font_color = Color(0.290196, 0.0941176, 0.0392157, 1)
+font_color = Color(0.121569, 0.121569, 0.121569, 1)
 outline_size = 8
-outline_color = Color(0.180392, 0.0470588, 0.0156863, 1)
+outline_color = Color(0.0509804, 0.00784314, 0.00392157, 1)
 shadow_size = 8
-shadow_color = Color(0.180392, 0.0470588, 0.0156863, 1)
+shadow_color = Color(0.0910134, 0.0150973, 0.00498509, 1)
 shadow_offset = Vector2(2, 2)

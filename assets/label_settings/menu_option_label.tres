@@ -5,6 +5,6 @@
 [resource]
 line_spacing = 0.0
 font = ExtResource("1_psn8s")
-font_color = Color(0.290196, 0.0941176, 0.0392157, 1)
+font_color = Color(0.670588, 0.670588, 0.670588, 1)
 outline_size = 6
-outline_color = Color(0.180392, 0.0470588, 0.0156863, 1)
+outline_color = Color(0.223529, 0.0627451, 0.0235294, 1)
