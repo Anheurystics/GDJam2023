@@ -53,8 +53,12 @@ func flash_death():
 func _on_memory_changed(_old_memory: int, new_memory: int):
 	camera.text = str(new_memory);
 	
-func _on_battery_changed(_old_battery: float, new_battery: float):
+func _on_battery_changed(old_battery: float, new_battery: float, pulse: bool):
 	flashlight.text = str(floori(new_battery));
+	if pulse:
+		var tween = flashlight.create_tween();
+		tween.tween_property(flashlight, "scale", Vector2(1.2, 1.2), 0.2);
+		tween.tween_property(flashlight, "scale", Vector2(1.0, 1.0), 0.05);
 
 func update_camera(raised: bool):
 	var tween: Tween = get_tree().create_tween();

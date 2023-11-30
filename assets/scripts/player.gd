@@ -1,9 +1,8 @@
 class_name Player extends CharacterBody3D
 
 const SPEED = 4.0
-const SPRINT_SPEED = 8.0
+const SPRINT_SPEED = 6.0
 const ADS_SPEED = 4.0
-const JUMP_VELOCITY = 4.5
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -29,7 +28,7 @@ var grab_timer: Timer;
 var grab_source: Enemy;
 
 signal health_changed(old: float, new: float, show_flash: bool);
-signal battery_changed(old: float, new: float);
+signal battery_changed(old: float, new: float, pulse: bool);
 signal memory_changed(old: int, new: int);
 signal message_logged(message: String);
 
@@ -195,10 +194,10 @@ func increment_grab(duration: float, enemy: Enemy):
 func can_pickup_battery():
 	return battery < 100;
 
-func modify_battery(amount: float):
+func modify_battery(amount: float, pulse: bool = false):
 	var old = battery
 	battery = clamp(battery + amount, 0, 100);
-	battery_changed.emit(old, battery);
+	battery_changed.emit(old, battery, pulse);
 
 func can_pickup_memory():
 	return memory < 20;

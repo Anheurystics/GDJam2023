@@ -190,6 +190,7 @@ func handle_flash(source_position: Vector3, player: Player):
 	if is_facing_flash(source_position, player) and health < 5:
 		captured = true;
 		on_death();
+		player.modify_battery(10, true);
 	else:
 		deal_damage(10, player);
 		
