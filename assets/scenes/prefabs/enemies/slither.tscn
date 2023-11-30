@@ -16,3 +16,12 @@ num_attack_frames = 4
 max_health = 20.0
 attack_damage = 5
 attack_rate = 2.0
+
+[node name="IdleGrunt" parent="SFX" index="0"]
+pitch_scale = 2.0
+
+[node name="Death" parent="SFX" index="1"]
+pitch_scale = 2.0
+
+[node name="Attack" parent="SFX" index="2"]
+pitch_scale = 2.0
