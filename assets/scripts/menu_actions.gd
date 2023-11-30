@@ -4,11 +4,12 @@ extends VBoxContainer
 @onready var continue_button: Button = $Continue/ContinueButton;
 
 func _ready():
+	LevelManager.current_level = -1;
 	new_game_button.pressed.connect(_on_new_game_button_pressed);
 	continue_button.pressed.connect(_on_continue_button_pressed);
 
 func _on_new_game_button_pressed():
-	get_tree().change_scene_to_file("res://assets/scenes/levels/e1m1.tscn");
+	LevelManager.load_next_level(false);
 
 func _on_continue_button_pressed():
 	Progress.load_game();

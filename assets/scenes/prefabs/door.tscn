@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://cybo3ilrrecd"]
+[gd_scene load_steps=7 format=3 uid="uid://cybo3ilrrecd"]
 
 [ext_resource type="Texture2D" uid="uid://cieh8m14ka68m" path="res://assets/freedoom/patches/aqdoor02.png" id="1_g0lde"]
 [ext_resource type="Script" path="res://assets/scripts/door.gd" id="1_mmuil"]
 [ext_resource type="Script" path="res://assets/scripts/interactable_door.gd" id="2_j3i77"]
+[ext_resource type="AudioStream" uid="uid://cso1ls7pkb8k0" path="res://assets/freedoom/sounds/dsbdopn.wav" id="4_kdmg7"]
+[ext_resource type="AudioStream" uid="uid://mcldua4m7uyo" path="res://assets/freedoom/sounds/dsbdcls.wav" id="5_1jusg"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_l3rpt"]
 size = Vector3(1, 1, 0.005)
@@ -54,3 +56,11 @@ texture_filter = 0
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, -2.5, 0)
 start_position = Vector3(0, 0, -1.5)
 end_position = Vector3(0, 0, 1.5)
+
+[node name="SFX" type="Node3D" parent="."]
+
+[node name="Open" type="AudioStreamPlayer3D" parent="SFX"]
+stream = ExtResource("4_kdmg7")
+
+[node name="Close" type="AudioStreamPlayer3D" parent="SFX"]
+stream = ExtResource("5_1jusg")

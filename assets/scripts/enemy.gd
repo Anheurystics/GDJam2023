@@ -26,6 +26,7 @@ var sprite_frames: SpriteFrames;
 @export var num_attack_frames: int;
 
 @export var can_open_doors: bool = true;
+@export var wander_on_start: bool = true;
 
 @export var max_health: float = 50;
 @onready var health: float = max_health;
@@ -35,9 +36,14 @@ var angle_to_player: float = 0;
 
 var is_attacking: bool = false;
 var player_target: Player = null;
+var is_following_player: bool = false;
 
 var has_last_known_target_position: bool = false;
 var last_known_target_position: Vector3;
+
+var idle_grunt_timer: Timer;
+
+var death_particles: GPUParticles3D;
 
 func _ready():
 	var walk_frames = [];
@@ -63,10 +69,26 @@ func _ready():
 	
 	dissolve.initialize(sprite.material_override);
 	dissolve.set_dissolve_amount(0.0);
+
+	death_particles = preload("res://assets/scenes/prefabs/flash_particles.tscn").instantiate();
+	death_particles.emitting = false;
+	add_child(death_particles);
+	
+	idle_grunt_timer = Timer.new();
+	idle_grunt_timer.one_shot = true;
+	idle_grunt_timer.timeout.connect(play_grunt_sfx);
+	add_child(idle_grunt_timer);
+	idle_grunt_timer.start(randi_range(3, 5));
+	
+	set_shaded(false);
+	$Sprite.cast_shadow = false;
 	
 	await NavigationServer3D.map_changed;
 	nav_agent.link_reached.connect(_on_nav_agent_link_reached);
 	nav_agent.navigation_finished.connect(_on_nav_agent_navigation_finished);
+	
+	if wander_on_start:
+		walk_random(0.0);
 
 func _on_sprite_frame_changed():
 	if sprite.material_override:
@@ -106,10 +128,15 @@ func _on_nav_agent_navigation_finished():
 	walk_random(1.0);
 
 func deal_damage(value: float, player: Player):
+	var old = health;
 	health = max(0, health - value);
 	dissolve.set_dissolve_amount(1.0 - (float(health) / max_health));
 	if !player_target && player:
 		player_target = player;
+
+	# if old > 5 && health <= 5:
+		# var tween = get_tree().create_tween();
+		# tween.tween_method(set_sprite_flash, 0.0, 1.0, 0.15);
 
 func load_sprite_frames(anim_prefix: String, prefix: String, frames: Array, loop: bool):
 	if frames.is_empty():
@@ -145,9 +172,30 @@ func handle_flash(source_position: Vector3, player: Player):
 	var angle = get_face_angle_to_position(source_position);
 	var ratio = abs(angle) / PI;
 	if ratio > 0.80 and health < 5:
-		queue_free();
+		on_death();
 	else:
 		deal_damage(10, player);
+
+func play_grunt_sfx():
+	if health <= 0:
+		return;
+	if player_target:
+		$SFX/IdleGrunt.play();
+	idle_grunt_timer.start(randi_range(3, 5));
+
+func on_death():
+	idle_grunt_timer.stop();
+	set_sprite_flash(0.0);
+	var tween = get_tree().create_tween();
+	tween.tween_method(set_sprite_flash, 0.0, 1.0, 0.4);
+	await tween.finished;
+	sprite.visible = false;
+	death_particles.emitting = true;
+	await get_tree().create_timer(death_particles.lifetime).timeout;
+	queue_free();
+
+func set_sprite_flash(value: float):
+	(sprite.material_override as ShaderMaterial).set_shader_parameter("flash", value);
 
 func choose_flipped_sprite_suffix(flip: bool, a: String, b: String):
 	if sprite_mirrored:
@@ -173,6 +221,9 @@ func get_face_angle_to_position(pos: Vector3):
 	return angle;
 
 func _process(_delta):
+	if health <= 0:
+		return;
+
 	angle_to_player = get_face_angle_to_position(get_viewport().get_camera_3d().global_position);
 	var pi_ratio = abs(angle_to_player) / PI;
 	var flip = angle_to_player < 0;
@@ -202,8 +253,17 @@ func _process(_delta):
 		anim_speed = 2;
 	sprite.speed_scale = anim_speed;
 	invisibleSprite.speed_scale = anim_speed;
+	
+	if player_target and not is_following_player:
+		is_following_player = true;
+		await get_tree().create_timer(0.5).timeout;
+		if player_target:
+			navigate_to(player_target.global_position);
 
 func _physics_process(delta):
+	if health <= 0:
+		return;
+
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
@@ -274,11 +334,15 @@ func get_speed():
 		return 4;
 
 func attack(player: Player):
-	is_attacking = true;
+	if health <= 0:
+		return;
+		
 	play_animation("attack");
 	await get_tree().create_timer(0.5).timeout;
-	player.modify_health(-10);
-	is_attacking = false;
+	
+	if health <= 0:
+		player.modify_health(-10);
+		player.increment_grab(0.5, self);
 
 func serialize():
 	return {
@@ -291,7 +355,8 @@ func serialize():
 		"has_last_known_target_position": has_last_known_target_position,
 		"last_known_target_position": last_known_target_position,
 		"dissolve_prev_amount": dissolve.prev_amount,
-		"dissolve_curr_amount": dissolve.curr_amount
+		"dissolve_curr_amount": dissolve.curr_amount,
+		"is_following_player": is_following_player
 	}
 
 func deserialize(data):
@@ -305,3 +370,4 @@ func deserialize(data):
 	last_known_target_position = data.last_known_target_position;
 	dissolve.prev_amount = data.dissolve_prev_amount;
 	dissolve.curr_amount = data.dissolve_curr_amount;
+	is_following_player = data.is_following_player;

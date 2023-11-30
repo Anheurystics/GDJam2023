@@ -1,12 +1,24 @@
-[gd_scene load_steps=7 format=3 uid="uid://buo80p043s8vx"]
+[gd_scene load_steps=11 format=3 uid="uid://buo80p043s8vx"]
 
 [ext_resource type="Script" path="res://assets/scripts/enemy.gd" id="1_54rww"]
 [ext_resource type="Material" uid="uid://cljeq7tk2vtjf" path="res://assets/custom_sprite_3d.material" id="2_d5878"]
 [ext_resource type="Script" path="res://assets/scripts/interactor.gd" id="2_r607x"]
 [ext_resource type="AudioStream" uid="uid://g1afvhbbk1ho" path="res://assets/freedoom/sounds/dsradio_loop.wav" id="3_lppot"]
 [ext_resource type="Script" path="res://assets/scripts/dissolve.gd" id="4_ndruh"]
+[ext_resource type="AudioStream" uid="uid://cwnm36p6oau7a" path="res://assets/freedoom/sounds/dsposit1.wav" id="6_tqxgk"]
+[ext_resource type="AudioStream" uid="uid://c6h8y0tsmjm48" path="res://assets/freedoom/sounds/dsposit2.wav" id="7_6joq8"]
+[ext_resource type="AudioStream" uid="uid://cfbirm6lrmrh3" path="res://assets/freedoom/sounds/dsposit3.wav" id="8_m1v07"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8gtp5"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_r6jq4"]
+streams_count = 3
+stream_0/stream = ExtResource("6_tqxgk")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("7_6joq8")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("8_m1v07")
+stream_2/weight = 1.0
 
 [node name="Enemy" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -49,6 +61,7 @@ script = ExtResource("4_ndruh")
 
 [node name="SFX" type="AudioStreamPlayer3D" parent="Dissolve"]
 stream = ExtResource("3_lppot")
+pitch_scale = 0.3
 
 [node name="Collision" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_8gtp5")
@@ -81,3 +94,10 @@ autoplay = "walk_1"
 
 [node name="Interactor" type="Node3D" parent="."]
 script = ExtResource("2_r607x")
+
+[node name="SFX" type="Node3D" parent="."]
+
+[node name="IdleGrunt" type="AudioStreamPlayer3D" parent="SFX"]
+stream = SubResource("AudioStreamRandomizer_r6jq4")
+pitch_scale = 0.45
+emission_angle_enabled = true

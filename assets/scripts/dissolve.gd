@@ -9,7 +9,8 @@ var prev_amount: float = 0;
 
 func initialize(p_material: ShaderMaterial):
 	material = p_material;
-	material.set_shader_parameter("is_fading", false);
+	material.set_shader_parameter("dissolve_started", false);
+	material.set_shader_parameter("is_dissolving", false);
 	particles = preload("res://assets/scenes/prefabs/darkness_particles.tscn").instantiate();
 	add_child(particles);
 
@@ -17,13 +18,14 @@ func initialize(p_material: ShaderMaterial):
 # 1 - none left
 func set_dissolve_amount(amount: float):
 	curr_amount = amount;
-	material.set_shader_parameter("is_fading", amount > 0.0);
+	material.set_shader_parameter("dissolve_started", amount > 0.0);
 	if amount > 0.0:
 		particles.position.y = lerpf(1.5, -1.5, amount);
 		set_shader_y_offset(amount);
 
 func _process(delta):
 	particles.emitting = prev_amount != curr_amount;
+	material.set_shader_parameter("is_dissolving", particles.emitting);
 	if particles.emitting != $SFX.playing:
 		if $SFX.playing:
 			$SFX.stop();

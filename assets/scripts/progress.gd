@@ -5,7 +5,7 @@ var quick_load_cache = {};
 
 func save_game():
 	var save = FileAccess.open(SAVE_LOCATION, FileAccess.WRITE);
-	var final_map = {};
+	var final_map = {"level": LevelManager.get_current_level_name()};
 	for node in get_tree().get_nodes_in_group("persist"):
 		if node.has_method("serialize"):
 			final_map[node.get_path()] = node.serialize();
@@ -17,4 +17,4 @@ func load_game():
 	var save = FileAccess.open(SAVE_LOCATION, FileAccess.READ);
 	Progress.quick_load_cache = bytes_to_var(save.get_buffer(save.get_length()));
 	save.close();
-	get_tree().change_scene_to_file("res://assets/scenes/levels/e1m1.tscn");
+	LevelManager.load_level(Progress.quick_load_cache["level"]);

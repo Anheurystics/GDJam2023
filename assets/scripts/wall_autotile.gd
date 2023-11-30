@@ -19,6 +19,7 @@ func update_material():
 	var side_a_material: StandardMaterial3D = $SideA.material_override;
 	side_a_material.albedo_texture = texture_side;
 	var side_b_material: StandardMaterial3D = $SideB.material_override;
+	side_b_material.uv1_scale.y = scale.x
 	side_b_material.albedo_texture = texture_side;
 	var side_c_material: StandardMaterial3D = $SideC.material_override;
 	side_c_material.albedo_texture = texture_side;

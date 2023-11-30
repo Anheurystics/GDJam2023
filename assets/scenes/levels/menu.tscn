@@ -1,10 +1,43 @@
-[gd_scene load_steps=5 format=3 uid="uid://chjsts2pgd0qc"]
+[gd_scene load_steps=22 format=3 uid="uid://chjsts2pgd0qc"]
 
 [ext_resource type="LabelSettings" uid="uid://gki76xj0ucxr" path="res://assets/label_settings/menu_title_label.tres" id="1_kk1gr"]
 [ext_resource type="Script" path="res://assets/scripts/menu_actions.gd" id="1_ucyrd"]
 [ext_resource type="LabelSettings" uid="uid://o8jpoelgs7t5" path="res://assets/label_settings/menu_option_label.tres" id="3_7j33s"]
+[ext_resource type="PackedScene" uid="uid://c0g74hh3iw64x" path="res://assets/scenes/prefabs/ceiling.tscn" id="4_qditu"]
+[ext_resource type="Texture2D" uid="uid://8q4s2infobh8" path="res://assets/freedoom/flats/ceil5_1.png" id="5_skd1m"]
+[ext_resource type="Texture2D" uid="uid://2ywqw1litjor" path="res://assets/freedoom/flats/ceil3_4.png" id="6_xj8yp"]
+[ext_resource type="Texture2D" uid="uid://u143qkbpt8fs" path="res://assets/freedoom/flats/ceil3_3.png" id="7_ed7jy"]
+[ext_resource type="PackedScene" uid="uid://mt8vumqp3wne" path="res://assets/scenes/prefabs/floor.tscn" id="8_mnwx2"]
+[ext_resource type="Texture2D" uid="uid://dn7gbofk030pr" path="res://assets/freedoom/flats/floor3_3.png" id="9_weh3k"]
+[ext_resource type="Texture2D" uid="uid://ddwiyct4wuxaa" path="res://assets/freedoom/flats/floor7_1.png" id="10_8sqps"]
+[ext_resource type="PackedScene" uid="uid://c04pqd4cv3gov" path="res://assets/scenes/prefabs/wall.tscn" id="11_d71t6"]
+[ext_resource type="Texture2D" uid="uid://b7hqwj3he5mel" path="res://assets/freedoom/patches/wall40_1.png" id="12_qvrmi"]
+[ext_resource type="Texture2D" uid="uid://djat18o0h12yh" path="res://assets/freedoom/patches/aqsupp01.png" id="13_jky0k"]
+[ext_resource type="FontFile" uid="uid://5baefw0neoo4" path="res://assets/Creepster-Regular.ttf" id="14_bcnea"]
+[ext_resource type="PackedScene" uid="uid://cybo3ilrrecd" path="res://assets/scenes/prefabs/door.tscn" id="15_knd5m"]
+[ext_resource type="PackedScene" uid="uid://be4rcdjalvoqh" path="res://assets/scenes/prefabs/trick_door.tscn" id="16_1u4kd"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i17n6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3uuyh"]
+resource_local_to_scene = true
+albedo_texture = ExtResource("10_8sqps")
+texture_filter = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_or0ds"]
+resource_local_to_scene = true
+albedo_texture = ExtResource("10_8sqps")
+texture_filter = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1365y"]
+resource_local_to_scene = true
+albedo_texture = ExtResource("10_8sqps")
+texture_filter = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_21oy5"]
+resource_local_to_scene = true
+albedo_texture = ExtResource("10_8sqps")
+texture_filter = 0
 
 [node name="Menu" type="Node2D"]
 
@@ -83,3 +116,224 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 flat = true
+
+[node name="Background" type="Node3D" parent="."]
+
+[node name="Ceilings" type="Node3D" parent="Background"]
+
+[node name="Ceiling" parent="Background/Ceilings" instance=ExtResource("4_qditu")]
+transform = Transform3D(5, 0, 0, 0, 1, 0, 0, 0, 5, -9.5, 5, 10)
+texture = ExtResource("5_skd1m")
+
+[node name="Ceiling2" parent="Background/Ceilings" instance=ExtResource("4_qditu")]
+transform = Transform3D(5, 0, 0, 0, 1, 0, 0, 0, 2, 15, 5, 2.5)
+texture = ExtResource("5_skd1m")
+
+[node name="Ceiling3" parent="Background/Ceilings" instance=ExtResource("4_qditu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 4.999, 15)
+texture = ExtResource("6_xj8yp")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Background/Ceilings/Ceiling3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.80125, 0)
+shadow_enabled = true
+omni_range = 7.0
+omni_attenuation = 0.0915054
+
+[node name="Ceiling4" parent="Background/Ceilings" instance=ExtResource("4_qditu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 4.999, 15)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Background/Ceilings/Ceiling4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.80125, 0)
+shadow_enabled = true
+omni_range = 7.0
+omni_attenuation = 0.0915054
+
+[node name="Ceiling5" parent="Background/Ceilings" instance=ExtResource("4_qditu")]
+transform = Transform3D(5, 0, 0, 0, 1, 0, 0, 0, 3, 15, 5, 15)
+texture = ExtResource("7_ed7jy")
+
+[node name="Floor" parent="Background" instance=ExtResource("8_mnwx2")]
+transform = Transform3D(5, 0, 0, 0, 1, 0, 0, 0, 3, 14.7354, 0.0570717, 15.0162)
+texture = ExtResource("9_weh3k")
+
+[node name="Floor2" parent="Background" instance=ExtResource("8_mnwx2")]
+transform = Transform3D(5, 0, 0, 0, 1, 0, 0, 0, 5, -10, 0, 10)
+texture = ExtResource("10_8sqps")
+
+[node name="Floor3" parent="Background" instance=ExtResource("8_mnwx2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 2, 5, 0, 2.5)
+texture = ExtResource("10_8sqps")
+
+[node name="Wall" parent="Background" instance=ExtResource("11_d71t6")]
+transform = Transform3D(4, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2.5, -2.5)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Wall1" parent="Background" instance=ExtResource("11_d71t6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 2.5, -2.5)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Wall2" parent="Background" instance=ExtResource("11_d71t6")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.5, 2.5, 5)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Wall3" parent="Background" instance=ExtResource("11_d71t6")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.5, 2.5, 5)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Wall4" parent="Background" instance=ExtResource("11_d71t6")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -12.5, 2.5, 0)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Wall5" parent="Background" instance=ExtResource("11_d71t6")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -20.7071, 2.5, 0.585786)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Wall6" parent="Background" instance=ExtResource("11_d71t6")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -17.1716, 2.5, -2.94975)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Wall7" parent="Background" instance=ExtResource("11_d71t6")]
+transform = Transform3D(-1.74846e-07, 0, 1, 0, 1, 0, -4, 0, -4.37114e-08, -22.5, 2.5, 12.5)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Wall8" parent="Background" instance=ExtResource("11_d71t6")]
+transform = Transform3D(-8.74228e-08, 0, 1, 0, 1, 0, -2, 0, -4.37114e-08, -12.5, 2.5, 12.5)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Wall9" parent="Background" instance=ExtResource("11_d71t6")]
+transform = Transform3D(-8.74228e-08, 0, 1, 0, 1, 0, -2, 0, -4.37114e-08, 2.5, 2.5, 12.5)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Label3D" type="Label3D" parent="Background/Wall9"]
+transform = Transform3D(-1, 0, -2.26494e-07, 0, 1.5, 0, 1.50996e-07, 0, -1.5, 1.3719, 0.643066, -0.675492)
+pixel_size = 0.0385
+shaded = true
+double_sided = false
+alpha_cut = 1
+texture_filter = 0
+modulate = Color(0.396078, 0, 0, 1)
+text = "turn
+back"
+font = ExtResource("14_bcnea")
+font_size = 15
+outline_size = 0
+uppercase = true
+
+[node name="Wall10" parent="Background" instance=ExtResource("11_d71t6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2.5, 12.5)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Wall11" parent="Background" instance=ExtResource("11_d71t6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 12.5)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Wall12" parent="Background" instance=ExtResource("11_d71t6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2.5, 7.5)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Wall13" parent="Background" instance=ExtResource("11_d71t6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 2.5, 12.5)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Wall14" parent="Background" instance=ExtResource("11_d71t6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 2.5, 12.5)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Door" parent="Background" instance=ExtResource("15_knd5m")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -12.5, 2.5, 5)
+
+[node name="Door2" parent="Background" instance=ExtResource("15_knd5m")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.5, 2.5, 0)
+required_key = "bkeya0"
+
+[node name="Door3" parent="Background" instance=ExtResource("15_knd5m")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.5, 2.5, 20)
+
+[node name="TrickDoor" parent="Background" instance=ExtResource("16_1u4kd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2.5, 12.5)
+collision_layer = 3
+
+[node name="Hallway" type="Node3D" parent="Background"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.264618, 0.0570717, 0.016201)
+
+[node name="Floor" parent="Background/Hallway" instance=ExtResource("8_mnwx2")]
+transform = Transform3D(4, 0, 0, 0, 1, 0, 0, 0, 1, 17.5, 0, 0)
+texture = ExtResource("10_8sqps")
+
+[node name="Floor2" parent="Background/Hallway" instance=ExtResource("8_mnwx2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 0, 5)
+texture = ExtResource("10_8sqps")
+
+[node name="Sprite3D" parent="Background/Hallway/Floor2" index="1"]
+material_override = SubResource("StandardMaterial3D_3uuyh")
+
+[node name="Floor3" parent="Background/Hallway" instance=ExtResource("8_mnwx2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 5)
+texture = ExtResource("10_8sqps")
+
+[node name="Sprite3D" parent="Background/Hallway/Floor3" index="1"]
+material_override = SubResource("StandardMaterial3D_or0ds")
+
+[node name="Floor4" parent="Background/Hallway" instance=ExtResource("8_mnwx2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 5)
+texture = ExtResource("10_8sqps")
+
+[node name="Sprite3D" parent="Background/Hallway/Floor4" index="1"]
+material_override = SubResource("StandardMaterial3D_1365y")
+
+[node name="Floor5" parent="Background/Hallway" instance=ExtResource("8_mnwx2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 5)
+texture = ExtResource("10_8sqps")
+
+[node name="Sprite3D" parent="Background/Hallway/Floor5" index="1"]
+material_override = SubResource("StandardMaterial3D_21oy5")
+
+[node name="Wall" parent="Background/Hallway" instance=ExtResource("11_d71t6")]
+transform = Transform3D(4, 0, 0, 0, 1, 0, 0, 0, 1, 17.5, 2.5, -2.5)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Wall2" parent="Background/Hallway" instance=ExtResource("11_d71t6")]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 1, 20, 2.5, 7.5)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Wall3" parent="Background/Hallway" instance=ExtResource("11_d71t6")]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 1, 15, 2.5, 2.52431)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="EndRoom" type="Node3D" parent="Background"]
+
+[node name="Wall" parent="Background/EndRoom" instance=ExtResource("11_d71t6")]
+transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -5, 0, -4.37114e-08, 27.5, 2.5, 10)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Wall2" parent="Background/EndRoom" instance=ExtResource("11_d71t6")]
+transform = Transform3D(10, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 2.5, 22.5)
+texture_face = ExtResource("12_qvrmi")
+texture_side = ExtResource("13_jky0k")
+
+[node name="Camera3D" type="Camera3D" parent="Background"]
+transform = Transform3D(-0.682279, 0, 0.731092, 0, 1, 0, -0.731092, 0, -0.682279, 0, 1.63079, 3.37555)
+
+[editable path="Background/Hallway/Floor2"]
+[editable path="Background/Hallway/Floor3"]
+[editable path="Background/Hallway/Floor4"]
+[editable path="Background/Hallway/Floor5"]

@@ -25,6 +25,9 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var interactor: Interactor = $Interactor;
 @onready var snapshot: Snapshot = $Snapshot;
 
+var grab_timer: Timer;
+var grab_source: Enemy;
+
 signal health_changed(old: float, new: float, show_flash: bool);
 signal battery_changed(old: float, new: float);
 signal memory_changed(old: int, new: int);
@@ -33,8 +36,9 @@ signal message_logged(message: String);
 var owned_keys: PackedStringArray = [];
 
 var flashlight_sphere_query: PhysicsShapeQueryParameters3D;
+var death_time: int;
 
-func _ready():	
+func _ready():
 	# Call these to initialize HUD values
 	modify_health(0);
 	modify_battery(0);
@@ -45,12 +49,23 @@ func _ready():
 	flashlight_sphere_query.collide_with_bodies = true;
 	flashlight_sphere_query.collision_mask = 4;
 	
+	grab_timer = Timer.new();
+	grab_timer.one_shot = true;
+	grab_timer.stop();
+	add_child(grab_timer);
+	
 	var sphere_shape = SphereShape3D.new();
 	sphere_shape.radius = 12;
 	flashlight_sphere_query.shape = sphere_shape;
 
+func check_death_input():
+	if Time.get_ticks_msec() - death_time > 2000:
+		if Input.is_anything_pressed():
+			get_tree().change_scene_to_file("res://assets/scenes/levels/menu.tscn");
+
 func _process(delta):
 	if health <= 0:
+		check_death_input();
 		return;
 
 	var rotate_dir = Input.get_vector("look_left", "look_right", "look_left", "look_right")
@@ -99,7 +114,7 @@ func check_flashlight_damage(delta):
 			var enemy_ray_query = PhysicsRayQueryParameters3D.create(global_position, enemy.global_position);
 			enemy_ray_query.collide_with_areas = false;
 			enemy_ray_query.collide_with_bodies = true;
-			enemy_ray_query.collision_mask = 4;
+			enemy_ray_query.collision_mask = ~2;
 			
 			var enemy_result = space_state.intersect_ray(enemy_ray_query);
 			if enemy_result && enemy == enemy_result.collider:
@@ -108,21 +123,17 @@ func check_flashlight_damage(delta):
 				if ratio > 0.8:
 					var att = 1.0 - (to_enemy.length() / 12.0);
 					enemy.deal_damage(5 * ((ratio - 0.8) / 0.2) * att * delta, self);
+					if !grab_timer.is_stopped() && grab_source == enemy:
+						grab_timer.stop();
+						grab_source = null;
 
 func _physics_process(delta):
 	if health <= 0:
 		return;
-	
-	# Add the gravity.
+
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
-	# Handle Jump.
-	# if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-	#		velocity.y = JUMP_VELOCITY
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
@@ -132,6 +143,9 @@ func _physics_process(delta):
 	elif Input.is_action_pressed("sprint") and direction.dot(global_transform.basis.z) <= 0:
 		speed_to_use = SPRINT_SPEED;
 
+	if !grab_timer.is_stopped():
+		speed_to_use = 0.5;
+	
 	if direction:
 		velocity.x = direction.x * speed_to_use
 		velocity.z = direction.z * speed_to_use
@@ -153,6 +167,7 @@ func modify_health(amount: float, play_effects: bool = true):
 	health_changed.emit(old, health, play_effects);
 	
 	if health <= 0:
+		death_time = Time.get_ticks_msec();
 		$SFX/Death.play();
 		var tween = get_tree().create_tween();
 		tween.set_parallel(true);
@@ -161,6 +176,12 @@ func modify_health(amount: float, play_effects: bool = true):
 	elif amount < 0:
 		if play_effects:
 			$SFX/Pain.play();
+
+func increment_grab(duration: float, enemy: Enemy):
+	if !grab_timer.is_stopped() && grab_timer.time_left > duration:
+		return;
+	grab_timer.start(duration);
+	grab_source = enemy;
 
 func can_pickup_battery():
 	return battery < 100;

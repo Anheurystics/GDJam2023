@@ -1,8 +1,5 @@
 class_name Shade extends Enemy
 
-@export var wander_on_start: bool = true;
-
-var is_following_player: bool = false;
 var attack_timer: Timer;
 
 func _ready():
@@ -12,20 +9,9 @@ func _ready():
 	attack_timer.one_shot = false;
 	attack_timer.timeout.connect(attack_target);
 	add_child(attack_timer);
-	
-	set_shaded(false);
-	$Sprite.cast_shadow = false;
-
-	if wander_on_start:
-		walk_random(0.0);
 
 func _process(delta):
 	super._process(delta);
-	if player_target and not is_following_player:
-		is_following_player = true;
-		await get_tree().create_timer(0.5).timeout;
-		if player_target:
-			navigate_to(player_target.global_position);
 
 	if is_following_player:
 		if not player_target:
@@ -56,12 +42,7 @@ func get_speed():
 	else:
 		return 1;
 
-func serialize():
-	var data = super.serialize();
-	data["is_following_player"] = is_following_player;
-	return data;
-
-func deserialize(data):
-	super.deserialize(data);
-	is_following_player = data.is_following_player;
+func on_death():
+	attack_timer.stop();
+	super.on_death();
 

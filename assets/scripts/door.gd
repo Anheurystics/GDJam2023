@@ -46,11 +46,13 @@ func set_open(p_open: bool, interactor: Interactor):
 	var tween = get_tree().create_tween();
 	var sprite = find_child("Visual");
 	if open:
+		$SFX/Open.play();
 		tween.tween_property(sprite, "position:y", 5, .5);
 		await tween.finished
 		set_collision_layer_value(1, false);
 		set_collision_layer_value(2, true);
 	else:
+		$SFX/Close.play();
 		tween.tween_property(sprite, "position:y", 0, .5);
 		await tween.finished
 		set_collision_layer_value(1, true);

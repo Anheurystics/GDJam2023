@@ -15,9 +15,14 @@ run/main_scene="res://assets/scenes/levels/menu.tscn"
 config/features=PackedStringArray("4.1", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[audio]
+
+buses/default_bus_layout="res://assets/audio_bus_layout.tres"
+
 [autoload]
 
 Progress="*res://assets/scripts/progress.gd"
+LevelManager="*res://assets/scripts/level_manager.gd"
 
 [debug]
 

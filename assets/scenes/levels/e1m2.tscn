@@ -1,0 +1,143 @@
+[gd_scene load_steps=21 format=3 uid="uid://52v44ycyvkxu"]
+
+[ext_resource type="Script" path="res://assets/scripts/level.gd" id="1_q6588"]
+[ext_resource type="PackedScene" uid="uid://dr1wshbq5jsvr" path="res://assets/scenes/prefabs/hud.tscn" id="2_d8mi3"]
+[ext_resource type="PackedScene" uid="uid://c565t4dda2qg4" path="res://assets/scenes/prefabs/player.tscn" id="3_x55ql"]
+[ext_resource type="Script" path="res://assets/scripts/camera_follow.gd" id="4_8fvq6"]
+[ext_resource type="Script" path="res://assets/scripts/pause_menu.gd" id="5_v3xis"]
+[ext_resource type="PackedScene" uid="uid://c0g74hh3iw64x" path="res://assets/scenes/prefabs/ceiling.tscn" id="6_tyehv"]
+[ext_resource type="Texture2D" uid="uid://8q4s2infobh8" path="res://assets/freedoom/flats/ceil5_1.png" id="7_1c4xw"]
+[ext_resource type="NavigationMesh" uid="uid://cl86pf835y6w7" path="res://assets/scenes/levels/e1m2_navmesh.tres" id="9_vddnp"]
+[ext_resource type="PackedScene" uid="uid://mt8vumqp3wne" path="res://assets/scenes/prefabs/floor.tscn" id="10_mclg3"]
+[ext_resource type="Texture2D" uid="uid://ddwiyct4wuxaa" path="res://assets/freedoom/flats/floor7_1.png" id="12_k6l14"]
+[ext_resource type="PackedScene" uid="uid://c04pqd4cv3gov" path="res://assets/scenes/prefabs/wall.tscn" id="13_4jshw"]
+[ext_resource type="Texture2D" uid="uid://b7hqwj3he5mel" path="res://assets/freedoom/patches/wall40_1.png" id="14_bf48c"]
+[ext_resource type="Texture2D" uid="uid://bobmm7j6nsdo0" path="res://assets/freedoom/patches/wall69_4.png" id="15_8mun2"]
+[ext_resource type="Texture2D" uid="uid://djat18o0h12yh" path="res://assets/freedoom/patches/aqsupp01.png" id="15_xb0r1"]
+[ext_resource type="Texture2D" uid="uid://vdpjh4s0p1np" path="res://assets/freedoom/patches/aqsupp10.png" id="16_uobxt"]
+[ext_resource type="Texture2D" uid="uid://olkp547ie5t3" path="res://assets/freedoom/flats/floor0_5.png" id="17_br8kr"]
+[ext_resource type="PackedScene" uid="uid://ctd0qnrs41nh3" path="res://assets/scenes/prefabs/pickups/memory_pickup.tscn" id="18_6i2vq"]
+[ext_resource type="PackedScene" uid="uid://da4ddqhqshu7k" path="res://assets/scenes/prefabs/exit.tscn" id="24_utnhr"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_p2ay5"]
+font_size = 64
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1lgeg"]
+load_path = "res://.godot/imported/wall69_4.png-e89d4539a86117978318298ffdb33bcf.s3tc.ctex"
+
+[node name="Root2" type="Node3D"]
+script = ExtResource("1_q6588")
+
+[node name="HUD" parent="." instance=ExtResource("2_d8mi3")]
+
+[node name="Player" parent="." instance=ExtResource("3_x55ql")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -18, 1, 16.5)
+
+[node name="SubViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+size = Vector2i(264, 180)
+render_target_clear_mode = 2
+
+[node name="Camera3D2" type="Camera3D" parent="SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1, 16.5)
+current = true
+fov = 100.0
+script = ExtResource("4_8fvq6")
+
+[node name="Flash" type="SpotLight3D" parent="SubViewport/Camera3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.539619, 0)
+visible = false
+light_energy = 16.0
+shadow_enabled = true
+shadow_blur = 0.2
+spot_range = 15.0
+spot_angle = 70.0
+
+[node name="PauseMenu" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 2
+visible = false
+script = ExtResource("5_v3xis")
+
+[node name="ColorRect" type="ColorRect" parent="PauseMenu"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.588235)
+
+[node name="Label" type="Label" parent="PauseMenu/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.0
+offset_top = -13.0
+offset_right = 31.0
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "PAUSED"
+label_settings = SubResource("LabelSettings_p2ay5")
+
+[node name="Ceilings" type="Node3D" parent="."]
+
+[node name="Ceiling" parent="Ceilings" instance=ExtResource("6_tyehv")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, -17.5, 5, 18)
+texture = ExtResource("7_1c4xw")
+
+[node name="Navigable" type="NavigationRegion3D" parent="."]
+navigation_mesh = ExtResource("9_vddnp")
+
+[node name="Floor" parent="Navigable" instance=ExtResource("10_mclg3")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 2, -17.5, 0, 17.5)
+texture = ExtResource("12_k6l14")
+
+[node name="Wall" parent="Navigable" instance=ExtResource("13_4jshw")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -22.5, 2.5, 20)
+texture_face = ExtResource("14_bf48c")
+texture_side = ExtResource("15_xb0r1")
+
+[node name="Wall2" parent="Navigable" instance=ExtResource("13_4jshw")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 1, -17, 2.5, 22.5)
+texture_face = ExtResource("14_bf48c")
+texture_side = ExtResource("15_xb0r1")
+
+[node name="Wall3" parent="Navigable" instance=ExtResource("13_4jshw")]
+transform = Transform3D(-8.74228e-08, 0, 1, 0, 1, 0, -2, 0, -4.37114e-08, -12.5, 2.5, 17.5)
+texture_face = ExtResource("14_bf48c")
+texture_side = ExtResource("15_xb0r1")
+
+[node name="Wall4" parent="Navigable" instance=ExtResource("13_4jshw")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 1, -17, 2.5, 12.5)
+texture_face = ExtResource("14_bf48c")
+texture_side = ExtResource("15_xb0r1")
+
+[node name="Exit" parent="." instance=ExtResource("24_utnhr")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -22, 2.5, 30.2675)
+
+[node name="Wall" parent="." instance=ExtResource("13_4jshw")]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 1, -29.5, 2.5, 12.5)
+texture_face = ExtResource("15_8mun2")
+texture_side = ExtResource("16_uobxt")
+
+[node name="Wall2" parent="." instance=ExtResource("13_4jshw")]
+transform = Transform3D(-2.18557e-07, 0, -1, 0, 1, 0, 5, 0, -4.37114e-08, -37, 2.5, 25)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("16_uobxt")
+
+[node name="Wall3" parent="." instance=ExtResource("13_4jshw")]
+transform = Transform3D(-1.31134e-07, 0, -1, 0, 1, 0, 3, 0, -4.37114e-08, -22.5, 2.5, 30)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("16_uobxt")
+
+[node name="Floor" parent="." instance=ExtResource("10_mclg3")]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 5, -30, 0, 25)
+texture = ExtResource("17_br8kr")
+
+[node name="MemoryPickup" parent="." instance=ExtResource("18_6i2vq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0.5, 16)
+memory_amount = 5

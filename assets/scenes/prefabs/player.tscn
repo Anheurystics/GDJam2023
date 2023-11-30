@@ -43,6 +43,8 @@ script = ExtResource("4_ahxwq")
 
 [node name="SFX" type="AudioStreamPlayer" parent="Snapshot"]
 stream = ExtResource("4_pd6tc")
+volume_db = 3.0
+pitch_scale = 0.66
 
 [node name="Flashlight" type="SpotLight3D" parent="."]
 visible = false
@@ -53,3 +55,4 @@ spot_angle = 35.0
 
 [node name="SFX" type="AudioStreamPlayer" parent="Flashlight"]
 stream = ExtResource("5_1yaxi")
+volume_db = 15.0

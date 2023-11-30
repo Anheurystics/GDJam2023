@@ -3,9 +3,9 @@ class_name HUD extends CanvasLayer
 @onready var viewmodel: Control = $Root/Viewmodel;
 @onready var viewfinder: Sprite2D = $Root/Viewmodel/Viewfinder;
 
-@onready var hp: Label = $Root/HP;
-@onready var camera: Label = $Root/Camera;
-@onready var flashlight: Label = $Root/Flashlight;
+@onready var hp: Label = $Root/HP/Value;
+@onready var camera: Label = $Root/Camera/Value;
+@onready var flashlight: Label = $Root/Flashlight/Value;
 @onready var color_overlay: ColorRect = $Root/ColorOverlay
 @onready var log_container: VBoxContainer = $Root/Log;
 
@@ -29,7 +29,7 @@ func _ready():
 	player.message_logged.connect(_on_message_logged);
 
 func _on_health_changed(old_health: float, new_health: float, show_flash: bool):
-	hp.text = "HP: " + str(floori(new_health));
+	hp.text = str(floori(new_health));
 	if new_health <= 0:
 		flash_death();
 	elif show_flash:
@@ -51,10 +51,10 @@ func flash_death():
 	color_overlay.color = DAMAGE_COLOR;
 
 func _on_memory_changed(_old_memory: int, new_memory: int):
-	camera.text = "Camera: " + str(new_memory);
+	camera.text = str(new_memory);
 	
 func _on_battery_changed(_old_battery: float, new_battery: float):
-	flashlight.text = "Flashlight: " + str(floori(new_battery));
+	flashlight.text = str(floori(new_battery));
 
 func update_camera(raised: bool):
 	var tween: Tween = get_tree().create_tween();

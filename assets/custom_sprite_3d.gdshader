@@ -3,7 +3,9 @@
 shader_type spatial;
 render_mode diffuse_lambert, depth_prepass_alpha;
 
-uniform bool is_fading;
+uniform bool dissolve_started;
+uniform bool is_dissolving;
+uniform float flash;
 uniform float y_cutoff;
 uniform sampler2D tex: source_color, filter_nearest;
 
@@ -22,11 +24,16 @@ void fragment() {
 	float tex_width = float(textureSize(tex, 0).x);
 	float tex_size_x = 1.0 / tex_width;
 	vec4 texture_albedo = texture(tex, UV);
-	if (is_fading && UV.y < y_cutoff + (random(floor(UV * tex_width)/tex_width) * tex_size_x * 5.0)) {
-		ALBEDO = texture_albedo.rgb;
-	} else {
-		ALBEDO = vec3(0.0, 0.0, 0.0);
+	
+	ALBEDO = vec3(0.0, 0.0, 0.0);
+	if (dissolve_started) {
+		if (UV.y < y_cutoff + (random(floor(UV * tex_width)/tex_width) * tex_size_x * 5.0)) {
+			ALBEDO = texture_albedo.rgb;
+		}
 	}
+
+	ALBEDO += vec3(1.0, 1.0, 1.0) * flash;
+	
 	SPECULAR = 0.0;
 	ALPHA = texture_albedo.a;
 	ALPHA_SCISSOR_THRESHOLD = 0.5;
