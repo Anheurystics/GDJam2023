@@ -5,7 +5,7 @@ var is_paused: bool = false;
 @onready var exit_button = $ColorRect/ExitButton;
 
 func _ready():
-	exit_button.pressed.connect(LevelManager.load_menu);
+	exit_button.pressed.connect(back_to_menu);
 
 func _input(event):
 	if event.is_action_pressed("pause"):
@@ -21,3 +21,7 @@ func toggle_pause():
 	is_paused = !is_paused;
 	visible = is_paused;
 	get_tree().paused = is_paused;
+
+func back_to_menu():
+	LevelManager.load_menu();
+	get_tree().paused = false;

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://chjsts2pgd0qc"]
+[gd_scene load_steps=23 format=3 uid="uid://chjsts2pgd0qc"]
 
 [ext_resource type="LabelSettings" uid="uid://gki76xj0ucxr" path="res://assets/label_settings/menu_title_label.tres" id="1_kk1gr"]
 [ext_resource type="Script" path="res://assets/scripts/menu_actions.gd" id="1_ucyrd"]
@@ -18,6 +18,8 @@
 [ext_resource type="PackedScene" uid="uid://be4rcdjalvoqh" path="res://assets/scenes/prefabs/trick_door.tscn" id="16_1u4kd"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i17n6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v07nc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3uuyh"]
 resource_local_to_scene = true
@@ -42,6 +44,7 @@ texture_filter = 0
 [node name="Menu" type="Node2D"]
 
 [node name="Root" type="CanvasLayer" parent="."]
+layer = 0
 
 [node name="Control" type="Control" parent="Root"]
 layout_mode = 3
@@ -53,6 +56,7 @@ offset_bottom = -486.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(4, 4)
+mouse_filter = 1
 
 [node name="TitleRoot" type="HBoxContainer" parent="Root/Control"]
 layout_mode = 1
@@ -103,6 +107,7 @@ theme_override_colors/font_hover_pressed_color = Color(0.435294, 0.435294, 0.435
 theme_override_colors/font_outline_color = Color(0.258824, 0.129412, 0, 1)
 theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("4_dtpdp")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_v07nc")
 text = "CONTINUE"
 flat = true
 

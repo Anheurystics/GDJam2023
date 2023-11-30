@@ -21,5 +21,6 @@ func get_current_level_name():
 	return levels[current_level];
 
 func load_menu():
+	current_level = -1;
 	get_tree().change_scene_to_file("res://assets/scenes/levels/menu.tscn");
 	
