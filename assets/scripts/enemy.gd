@@ -194,9 +194,12 @@ func handle_flash(source_position: Vector3, player: Player):
 	if is_facing_flash(source_position, player) and health < 5:
 		captured = true;
 		on_death();
-		player.modify_battery(10, true);
+		reward_on_death(player);
 	else:
 		deal_damage(10, player);
+
+func reward_on_death(player: Player):
+	pass
 		
 func set_is_in_camera(in_camera: bool):
 	is_in_camera = in_camera;
@@ -337,8 +340,8 @@ func _physics_process(delta):
 	move_and_slide();
 
 func check_player_target():
-	if abs(angle_to_player) <= PI * 5 * EIGHTH:
-		return;
+	# if abs(angle_to_player) <= PI * 5 * EIGHTH:
+	#	return;
 		
 	var space_state = get_parent().get_world_3d().direct_space_state;
 	var player_ray_query = PhysicsRayQueryParameters3D.create(global_position, get_viewport().get_camera_3d().global_position);

@@ -23,3 +23,7 @@ func _process(delta: float):
 
 func should_regen():
 	return Time.get_ticks_msec() - last_damage_ms > regen_after_seconds * 1000;
+
+func reward_on_death(player: Player):
+	player.modify_battery(10);
+	player.modify_memory(5);

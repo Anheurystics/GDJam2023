@@ -6,3 +6,5 @@ func get_speed():
 	else:
 		return 1;
 
+func reward_on_death(player: Player):
+	player.modify_battery(10, true);
