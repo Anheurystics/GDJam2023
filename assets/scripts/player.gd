@@ -94,15 +94,14 @@ func _process(delta):
 		snapshot.take_picture();
 		modify_memory(-1);
 	
-	if flashlight.visible:
-		check_flashlight_damage(delta);
+	check_enemies(delta);
 
 	if health > max_base_health:
 		var decay = health - max(health - (over_health_decay * delta), max_base_health);
 		if decay > 0:
 			modify_health(-decay, false);
 
-func check_flashlight_damage(delta):
+func check_enemies(delta):
 	var space_state = get_parent().get_world_3d().direct_space_state;
 	flashlight_sphere_query.transform.origin = global_position
 	var sphere_results = space_state.intersect_shape(flashlight_sphere_query);
@@ -118,14 +117,24 @@ func check_flashlight_damage(delta):
 			
 			var enemy_result = space_state.intersect_ray(enemy_ray_query);
 			if enemy_result && enemy == enemy_result.collider:
-				var to_enemy = enemy_ray_query.to - enemy_ray_query.from;
-				var ratio = acos(to_enemy.normalized().dot(global_transform.basis.z)) / PI;
-				if ratio > 0.8:
-					var att = 1.0 - (to_enemy.length() / 12.0);
-					enemy.deal_damage(5 * ((ratio - 0.8) / 0.2) * att * delta, self);
-					if !grab_timer.is_stopped() && grab_source == enemy:
-						grab_timer.stop();
-						grab_source = null;
+				if flashlight.visible:
+					var to_enemy = enemy_ray_query.to - enemy_ray_query.from;
+					var ratio = acos(to_enemy.normalized().dot(global_transform.basis.z)) / PI;
+					if ratio > 0.8:
+						var att = 1.0 - (to_enemy.length() / 12.0);
+						enemy.deal_damage(5 * ((ratio - 0.8) / 0.2) * att * delta, self);
+						if !grab_timer.is_stopped() && grab_source == enemy:
+							grab_timer.stop();
+							grab_source = null;
+				
+				enemy.set_is_in_camera(!enemy.captured && enemy.is_facing_flash(get_viewport().get_camera_3d().global_position, get_parent() as Player));
+				if enemy.is_in_camera:
+					if !snapshot.enemies_in_camera.has(enemy):
+						snapshot.enemies_in_camera.push_back(enemy);
+				else:
+					var index = snapshot.enemies_in_camera.find(enemy);
+					if index > -1:
+						snapshot.enemies_in_camera.remove_at(index);
 
 func _physics_process(delta):
 	if health <= 0:

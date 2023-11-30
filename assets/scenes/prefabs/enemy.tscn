@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://buo80p043s8vx"]
+[gd_scene load_steps=16 format=3 uid="uid://buo80p043s8vx"]
 
 [ext_resource type="Script" path="res://assets/scripts/enemy.gd" id="1_54rww"]
 [ext_resource type="Material" uid="uid://cljeq7tk2vtjf" path="res://assets/custom_sprite_3d.material" id="2_d5878"]
@@ -11,6 +11,7 @@
 [ext_resource type="AudioStream" uid="uid://l6jxgkh53tvr" path="res://assets/freedoom/sounds/dssgtatk.wav" id="9_5y2e4"]
 [ext_resource type="AudioStream" uid="uid://bcx8otmfjlvm6" path="res://assets/freedoom/sounds/dsbgdth1.wav" id="9_cujgp"]
 [ext_resource type="AudioStream" uid="uid://bp0opxt37n3oc" path="res://assets/freedoom/sounds/dsbgdth2.wav" id="10_7ayfj"]
+[ext_resource type="Texture2D" uid="uid://ddjv0yl6wci3i" path="res://assets/textures/camera_outline.png" id="12_d4r8s"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8gtp5"]
 
@@ -118,3 +119,13 @@ emission_angle_enabled = true
 [node name="Attack" type="AudioStreamPlayer3D" parent="SFX"]
 stream = ExtResource("9_5y2e4")
 emission_angle_enabled = true
+
+[node name="Outline" type="Sprite3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0)
+visible = false
+layers = 2
+billboard = 2
+no_depth_test = true
+texture_filter = 0
+render_priority = 1
+texture = ExtResource("12_d4r8s")

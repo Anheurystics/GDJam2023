@@ -14,6 +14,8 @@ var flash: SpotLight3D;
 var camera_ads: float = 0.0;
 var camera_res: float = 1.0;
 
+var enemies_in_camera = [];
+
 func _ready():
 	var root: Node = get_tree().get_current_scene();
 	subviewport = root.find_child("SubViewport");
@@ -45,31 +47,8 @@ func take_picture():
 	await get_tree().create_timer(0.10).timeout;
 	set_flash_enabled(false);
 
-	var space_state = get_parent().get_world_3d().direct_space_state;
-	var sphere_query = PhysicsShapeQueryParameters3D.new();
-	sphere_query.exclude.push_back(get_parent().get_rid());
-	sphere_query.collide_with_areas = false;
-	sphere_query.collide_with_bodies = true;
-	sphere_query.collision_mask = 4;
-	sphere_query.transform.origin = get_viewport().get_camera_3d().global_position;
-	
-	var sphere_shape = SphereShape3D.new();
-	sphere_shape.radius = 5;
-	sphere_query.shape = sphere_shape;
-	var sphere_results = space_state.intersect_shape(sphere_query);
-	if sphere_results:
-		for result in sphere_results:
-			var enemy: Enemy = result.collider as Enemy;
-			
-			# Check if this enemy is within line of sight using a raycast
-			var enemy_ray_query = PhysicsRayQueryParameters3D.create(get_parent().global_position, enemy.global_position);
-			enemy_ray_query.collide_with_areas = false;
-			enemy_ray_query.collide_with_bodies = true;
-			enemy_ray_query.collision_mask = 4;
-			
-			var enemy_result = space_state.intersect_ray(enemy_ray_query);
-			if enemy == enemy_result.collider:
-				enemy.handle_flash(get_viewport().get_camera_3d().global_position, get_parent() as Player);
+	for enemy in enemies_in_camera:
+		enemy.handle_flash(get_viewport().get_camera_3d().global_position, get_parent() as Player);
 
 func set_flash_enabled(enabled: bool):
 	flash.visible = enabled;

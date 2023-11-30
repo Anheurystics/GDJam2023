@@ -47,6 +47,7 @@ var has_last_known_target_position: bool = false;
 var last_known_target_position: Vector3;
 
 var idle_grunt_timer: Timer;
+var is_in_camera: bool = false;
 
 var death_particles: GPUParticles3D;
 
@@ -154,7 +155,6 @@ func load_sprite_frames(anim_prefix: String, prefix: String, frames: Array, loop
 	var is_mirrored = true;
 	if sprite_mirrored_dict.has(anim_prefix):
 		is_mirrored = sprite_mirrored_dict[anim_prefix];
-	print(anim_prefix + " " + str(is_mirrored));
 	var indices = [["1"], ["2", "8"], ["3", "7"], ["4", "6"], ["5"]] if is_mirrored else [["1"], ["2"], ["3"], ["4"], ["5"], ["6"], ["7"], ["8"]];
 	
 	if not sprite_frames:
@@ -181,14 +181,21 @@ func walk_random(delay: float):
 	var random = global_position + Vector3(randf_range(-10.0, 10.0), 0, randf_range(-10.0, 10.0));
 	navigate_to(random);
 
-func handle_flash(source_position: Vector3, player: Player):
+func is_facing_flash(source_position: Vector3, player: Player):
 	var angle = get_face_angle_to_position(source_position);
 	var ratio = abs(angle) / PI;
-	if ratio > 0.80 and health < 5:
+	return ratio > 0.80;
+
+func handle_flash(source_position: Vector3, player: Player):
+	if is_facing_flash(source_position, player) and health < 5:
 		captured = true;
 		on_death();
 	else:
 		deal_damage(10, player);
+		
+func set_is_in_camera(in_camera: bool):
+	is_in_camera = in_camera;
+	$Outline.visible = in_camera;
 
 func play_grunt_sfx():
 	if captured:
