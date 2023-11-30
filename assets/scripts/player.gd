@@ -191,6 +191,9 @@ func modify_battery(amount: float):
 	battery = clamp(battery + amount, 0, 100);
 	battery_changed.emit(old, battery);
 
+func can_pickup_memory():
+	return memory < 20;
+
 func modify_memory(amount: int):
 	var old = memory;
 	memory = clamp(memory + amount, 0, 100);
