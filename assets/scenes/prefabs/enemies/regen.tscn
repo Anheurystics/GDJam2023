@@ -7,6 +7,6 @@
 script = ExtResource("2_tfxga")
 regen_after_seconds = 3.0
 regen_per_second = 2.0
-sprite_name = "poss"
+sprite_name = "fatt"
 attack_start_frame = "e"
-num_attack_frames = 2
+num_attack_frames = 4

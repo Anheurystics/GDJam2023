@@ -14,7 +14,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var max_memory = 10;
 
 @export var flashlight_drain_rate = 5;
-@export var flashlight_regen_rate = 0.5;
+@export var flashlight_regen_rate = 1;
 
 @onready var health: float = max_base_health; # HP
 @onready var battery: float = max_battery; # Flashlight
@@ -114,10 +114,11 @@ func check_enemies(delta):
 			enemy_ray_query.collide_with_bodies = true;
 			enemy_ray_query.collision_mask = ~2;
 			
+			var to_enemy = enemy_ray_query.to - enemy_ray_query.from;
+			
 			var enemy_result = space_state.intersect_ray(enemy_ray_query);
 			if enemy_result && enemy == enemy_result.collider:
 				if flashlight.visible:
-					var to_enemy = enemy_ray_query.to - enemy_ray_query.from;
 					var ratio = acos(to_enemy.normalized().dot(global_transform.basis.z)) / PI;
 					if ratio > 0.8:
 						var att = 1.0 - (to_enemy.length() / 12.0);
@@ -126,7 +127,7 @@ func check_enemies(delta):
 							grab_timer.stop();
 							grab_source = null;
 				
-				enemy.set_is_in_camera(!enemy.captured && enemy.is_facing_flash(get_viewport().get_camera_3d().global_position, get_parent() as Player));
+				enemy.set_is_in_camera(to_enemy.length() < 6 && !enemy.captured && enemy.is_facing_flash(get_viewport().get_camera_3d().global_position, get_parent() as Player));
 				if enemy.is_in_camera:
 					if !snapshot.enemies_in_camera.has(enemy):
 						snapshot.enemies_in_camera.push_back(enemy);
@@ -150,6 +151,8 @@ func _physics_process(delta):
 		speed_to_use = ADS_SPEED;
 	elif Input.is_action_pressed("sprint") and direction.dot(global_transform.basis.z) <= 0:
 		speed_to_use = SPRINT_SPEED;
+	elif direction.dot(global_transform.basis.z) > 0:
+		speed_to_use = SPEED * 0.6;
 
 	if !grab_timer.is_stopped():
 		speed_to_use = 0.5;

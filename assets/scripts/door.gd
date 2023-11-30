@@ -16,7 +16,7 @@ func _ready():
 func update_sprite():
 	if required_key == "":
 		return;
-	var tex = load("res://assets/freedoom/sprites/" + required_key + ".png");
+	var tex = load("res://assets/freedoom/" + required_key + ".png");
 	$Visual/KeyIconFront.texture = tex;
 	$Visual/KeyIconBack.texture = tex;
 

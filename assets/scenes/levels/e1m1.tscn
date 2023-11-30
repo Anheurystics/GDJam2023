@@ -11,7 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://u143qkbpt8fs" path="res://assets/freedoom/flats/ceil3_3.png" id="6_epjyy"]
 [ext_resource type="Texture2D" uid="uid://8q4s2infobh8" path="res://assets/freedoom/flats/ceil5_1.png" id="7_jducb"]
 [ext_resource type="Texture2D" uid="uid://2ywqw1litjor" path="res://assets/freedoom/flats/ceil3_4.png" id="7_xr30e"]
-[ext_resource type="Texture2D" uid="uid://bg3i80hkq088f" path="res://assets/freedoom/sprites/playl0.png" id="9_ds1wk"]
 [ext_resource type="Texture2D" uid="uid://ddwiyct4wuxaa" path="res://assets/freedoom/flats/floor7_1.png" id="10_xtbta"]
 [ext_resource type="Texture2D" uid="uid://dn7gbofk030pr" path="res://assets/freedoom/flats/floor3_3.png" id="11_aef4n"]
 [ext_resource type="FontFile" uid="uid://5baefw0neoo4" path="res://assets/Creepster-Regular.ttf" id="12_55tgc"]
@@ -20,10 +19,11 @@
 [ext_resource type="Script" path="res://assets/scripts/pause_menu.gd" id="13_4p8jf"]
 [ext_resource type="PackedScene" uid="uid://x2scqnj2v47a" path="res://assets/scenes/prefabs/enemies/shade.tscn" id="13_ufw0t"]
 [ext_resource type="Texture2D" uid="uid://djat18o0h12yh" path="res://assets/freedoom/patches/aqsupp01.png" id="16_kqcv2"]
-[ext_resource type="PackedScene" uid="uid://dckiyx2a8ggks" path="res://assets/scenes/prefabs/pickups/health_pickup.tscn" id="18_abmkn"]
+[ext_resource type="PackedScene" uid="uid://bw6r3aj31eguy" path="res://assets/scenes/prefabs/corpse.tscn" id="19_1enir"]
 [ext_resource type="PackedScene" uid="uid://du10p273fvgjk" path="res://assets/scenes/prefabs/pickups/battery_pickup.tscn" id="19_dweaa"]
 [ext_resource type="PackedScene" uid="uid://bm6741mnf5w32" path="res://assets/scenes/prefabs/pickups/key.tscn" id="19_t30pm"]
 [ext_resource type="PackedScene" uid="uid://da4ddqhqshu7k" path="res://assets/scenes/prefabs/exit.tscn" id="21_nr7q7"]
+[ext_resource type="PackedScene" uid="uid://ctd0qnrs41nh3" path="res://assets/scenes/prefabs/pickups/memory_pickup.tscn" id="24_0jx5h"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_p2ay5"]
 font_size = 64
@@ -253,7 +253,7 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -12.5,
 
 [node name="Door2" parent="Navigable" instance=ExtResource("3_l8byn")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.5, 2.5, 0)
-required_key = "bkeya0"
+required_key = "sprites/bkeya0"
 
 [node name="Door3" parent="Navigable" instance=ExtResource("3_l8byn")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.5, 2.5, 20)
@@ -324,13 +324,7 @@ transform = Transform3D(10, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 2.5, 22.5)
 texture_face = ExtResource("12_6556e")
 texture_side = ExtResource("16_kqcv2")
 
-[node name="Corpse" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.09135, 0.261753, 3.21422)
-pixel_size = 0.042
-billboard = 2
-shaded = true
-texture_filter = 0
-texture = ExtResource("9_ds1wk")
+[node name="Corpse" parent="." instance=ExtResource("19_1enir")]
 
 [node name="Shade" parent="." instance=ExtResource("13_ufw0t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.65466, 1, 4)
@@ -344,11 +338,7 @@ wander_on_start = false
 
 [node name="Key" parent="." instance=ExtResource("19_t30pm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.6199, 0.0125001, 11.1026)
-key_id = "bkeya0"
-
-[node name="HealthPickup" parent="." instance=ExtResource("18_abmkn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0.5, 15.5)
-health_amount = 50
+key_id = "sprites/bkeya0"
 
 [node name="BatteryPickup" parent="." instance=ExtResource("19_dweaa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.5, 15.5)
@@ -368,6 +358,9 @@ wander_on_start = false
 [node name="Shade6" parent="." instance=ExtResource("13_ufw0t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 1, 15.5)
 wander_on_start = false
+
+[node name="MemoryPickup" parent="." instance=ExtResource("24_0jx5h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0.5, 15.5)
 
 [editable path="Navigable/Hallway/Floor2"]
 [editable path="Navigable/Hallway/Floor3"]

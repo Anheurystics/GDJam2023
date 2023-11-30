@@ -12,7 +12,7 @@ func _ready():
 func update_sprite():
 	if key_id == "":
 		return;
-	$Sprite.texture = load("res://assets/freedoom/sprites/" + key_id + ".png");
+	$Sprite.texture = load("res://assets/freedoom/" + key_id + ".png");
 
 func on_player_picked_up(player: Player):
 	player.owned_keys.append(key_id);

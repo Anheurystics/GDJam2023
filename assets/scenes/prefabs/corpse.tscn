@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://bw6r3aj31eguy"]
+
+[ext_resource type="Texture2D" uid="uid://bg3i80hkq088f" path="res://assets/freedoom/sprites/playl0.png" id="1_hn7vr"]
+
+[node name="Corpse" type="Sprite3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.09135, 0.261753, 3.21422)
+pixel_size = 0.042
+billboard = 2
+shaded = true
+texture_filter = 0
+texture = ExtResource("1_hn7vr")

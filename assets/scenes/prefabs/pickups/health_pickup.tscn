@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dxaswna327ckt" path="res://assets/freedoom/sprites/bon1a0.png" id="3_x6bxw"]
 
 [node name="HealthPickup" instance=ExtResource("1_hyrfd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 script = ExtResource("2_2oq3f")
 health_amount = 10
 

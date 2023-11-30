@@ -48,7 +48,8 @@ func take_picture():
 	set_flash_enabled(false);
 
 	for enemy in enemies_in_camera:
-		enemy.handle_flash(get_viewport().get_camera_3d().global_position, get_parent() as Player);
+		if enemy && is_instance_valid(enemy) && !enemy.captured:
+			enemy.handle_flash(get_viewport().get_camera_3d().global_position, get_parent() as Player);
 
 func set_flash_enabled(enabled: bool):
 	flash.visible = enabled;

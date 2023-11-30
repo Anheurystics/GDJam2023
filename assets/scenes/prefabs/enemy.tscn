@@ -102,6 +102,9 @@ animation = &""
 autoplay = "walk_1"
 
 [node name="NavAgent" type="NavigationAgent3D" parent="."]
+avoidance_enabled = true
+neighbor_distance = 10.0
+max_speed = 4.0
 
 [node name="Interactor" type="Node3D" parent="."]
 script = ExtResource("2_r607x")

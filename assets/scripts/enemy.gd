@@ -97,6 +97,7 @@ func _ready():
 	await NavigationServer3D.map_changed;
 	nav_agent.link_reached.connect(_on_nav_agent_link_reached);
 	nav_agent.navigation_finished.connect(_on_nav_agent_navigation_finished);
+	nav_agent.velocity_computed.connect(_on_nav_agent_velocity_computed);
 	
 	if wander_on_start:
 		walk_random(0.0);
@@ -140,6 +141,9 @@ func _on_nav_agent_navigation_finished():
 		navigate_to(player_target.global_position);
 	else:
 		walk_random(1.0);
+		
+func _on_nav_agent_velocity_computed(safe_velocity: Vector3):
+	pass
 
 func deal_damage(value: float, player: Player):
 	var old = health;
@@ -184,7 +188,7 @@ func walk_random(delay: float):
 func is_facing_flash(source_position: Vector3, player: Player):
 	var angle = get_face_angle_to_position(source_position);
 	var ratio = abs(angle) / PI;
-	return ratio > 0.80;
+	return ratio > 0.85;
 
 func handle_flash(source_position: Vector3, player: Player):
 	if is_facing_flash(source_position, player) and health < 5:
@@ -248,7 +252,11 @@ func _process(_delta):
 	if captured:
 		return;
 
-	angle_to_player = get_face_angle_to_position(get_viewport().get_camera_3d().global_position);
+	var player_camera = get_viewport().get_camera_3d();
+	if !player_camera:
+		return;
+		
+	angle_to_player = get_face_angle_to_position(player_camera.global_position);
 	var pi_ratio = abs(angle_to_player) / PI;
 	var flip = angle_to_player < 0;
 
@@ -280,7 +288,7 @@ func _process(_delta):
 	
 	if player_target and not is_following_player:
 		is_following_player = true;
-		await get_tree().create_timer(0.5).timeout;
+		await get_tree().create_timer(0.2).timeout;
 		if player_target:
 			navigate_to(player_target.global_position);
 	
@@ -311,12 +319,14 @@ func _physics_process(delta):
 		if global_position.distance_to(target) > 0.1 and not nav_paused and not is_attacking:
 			var look_at_target = Vector3(target);
 			look_at_target.y = global_position.y;
-			look_at(look_at_target);
 			var to_target =  target - global_position;
 			to_target.y = 0;
+			if to_target.length() >= 1.0:
+				look_at(look_at_target);
 			velocity = to_target.normalized() * get_speed();
 			if dissolve.is_emitting():
 				velocity *= 0.5;
+	nav_agent.set_velocity(velocity);
 	
 	check_player_target();
 	

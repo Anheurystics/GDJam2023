@@ -1,6 +1,6 @@
 extends Node
 
-var levels = ["e1m1", "e1m2"];
+var levels = ["e1m1", "e1m2", "e1m3"];
 var current_level: int = -1; # -1: menu
 
 var persist_player_stats: bool = false;

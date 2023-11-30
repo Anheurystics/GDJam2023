@@ -41,13 +41,13 @@ texture_filter = 0
 texture = ExtResource("1_g0lde")
 
 [node name="KeyIconFront" type="Sprite3D" parent="Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.3)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0.3)
 pixel_size = 0.04
 shaded = true
 texture_filter = 0
 
 [node name="KeyIconBack" type="Sprite3D" parent="Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, -0.3)
 pixel_size = 0.04
 shaded = true
 texture_filter = 0

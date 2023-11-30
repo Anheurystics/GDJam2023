@@ -259,7 +259,7 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -12.5,
 
 [node name="Door2" parent="Background" instance=ExtResource("15_knd5m")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 7.5, 2.5, 0)
-required_key = "bkeya0"
+required_key = "sprites/bkeya0"
 
 [node name="Door3" parent="Background" instance=ExtResource("15_knd5m")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.5, 2.5, 20)

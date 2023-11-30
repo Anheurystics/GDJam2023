@@ -1,0 +1,397 @@
+[gd_scene load_steps=26 format=3 uid="uid://b66bhp30ldufy"]
+
+[ext_resource type="Script" path="res://assets/scripts/level.gd" id="1_5ha50"]
+[ext_resource type="PackedScene" uid="uid://dr1wshbq5jsvr" path="res://assets/scenes/prefabs/hud.tscn" id="2_8fui6"]
+[ext_resource type="PackedScene" uid="uid://c565t4dda2qg4" path="res://assets/scenes/prefabs/player.tscn" id="3_g0twp"]
+[ext_resource type="Script" path="res://assets/scripts/camera_follow.gd" id="4_2dyco"]
+[ext_resource type="Script" path="res://assets/scripts/pause_menu.gd" id="5_ymw4p"]
+[ext_resource type="PackedScene" uid="uid://c0g74hh3iw64x" path="res://assets/scenes/prefabs/ceiling.tscn" id="6_cjst2"]
+[ext_resource type="Texture2D" uid="uid://ca7mbkuna0p2q" path="res://assets/freedoom/flats/ceil5_2.png" id="7_mpvdo"]
+[ext_resource type="NavigationMesh" uid="uid://ce7nueje3ds0b" path="res://assets/scenes/levels/e1m3_navmesh.tres" id="8_6bqjd"]
+[ext_resource type="PackedScene" uid="uid://mt8vumqp3wne" path="res://assets/scenes/prefabs/floor.tscn" id="9_my160"]
+[ext_resource type="PackedScene" uid="uid://c04pqd4cv3gov" path="res://assets/scenes/prefabs/wall.tscn" id="11_4h36h"]
+[ext_resource type="Texture2D" uid="uid://bp4ycmalvmdc6" path="res://assets/freedoom/patches/mwall1_1.png" id="14_cn3mg"]
+[ext_resource type="Texture2D" uid="uid://c53x67u62pmg3" path="res://assets/freedoom/patches/aqsupp07.png" id="15_cgs0w"]
+[ext_resource type="Texture2D" uid="uid://vdpjh4s0p1np" path="res://assets/freedoom/patches/aqsupp10.png" id="15_lr1sb"]
+[ext_resource type="PackedScene" uid="uid://bm6741mnf5w32" path="res://assets/scenes/prefabs/pickups/key.tscn" id="16_15a0j"]
+[ext_resource type="PackedScene" uid="uid://bnggkrax2w5j1" path="res://assets/scenes/prefabs/enemies/regen.tscn" id="17_0os6x"]
+[ext_resource type="PackedScene" uid="uid://cybo3ilrrecd" path="res://assets/scenes/prefabs/door.tscn" id="17_p5xyr"]
+[ext_resource type="PackedScene" uid="uid://du10p273fvgjk" path="res://assets/scenes/prefabs/pickups/battery_pickup.tscn" id="18_d80la"]
+[ext_resource type="Texture2D" uid="uid://bbbkr4mrvgk6t" path="res://assets/freedoom/flats/floor5_1.png" id="18_tkbfu"]
+[ext_resource type="PackedScene" uid="uid://x2scqnj2v47a" path="res://assets/scenes/prefabs/enemies/shade.tscn" id="19_wy5b5"]
+[ext_resource type="PackedScene" uid="uid://42co4oeg1qs2" path="res://assets/scenes/prefabs/enemies/slither.tscn" id="20_kkf5l"]
+[ext_resource type="PackedScene" uid="uid://dckiyx2a8ggks" path="res://assets/scenes/prefabs/pickups/health_pickup.tscn" id="21_0qplt"]
+[ext_resource type="PackedScene" uid="uid://ctd0qnrs41nh3" path="res://assets/scenes/prefabs/pickups/memory_pickup.tscn" id="22_eyb3u"]
+[ext_resource type="PackedScene" uid="uid://da4ddqhqshu7k" path="res://assets/scenes/prefabs/exit.tscn" id="23_bednt"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_p2ay5"]
+font_size = 64
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1lgeg"]
+load_path = "res://.godot/imported/wall69_4.png-e89d4539a86117978318298ffdb33bcf.s3tc.ctex"
+
+[node name="Root" type="Node3D"]
+script = ExtResource("1_5ha50")
+
+[node name="HUD" parent="." instance=ExtResource("2_8fui6")]
+
+[node name="Player" parent="." instance=ExtResource("3_g0twp")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -19.5, 1, 54)
+
+[node name="SubViewport" type="SubViewport" parent="."]
+handle_input_locally = false
+size = Vector2i(264, 180)
+render_target_clear_mode = 2
+
+[node name="Camera3D2" type="Camera3D" parent="SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1, 49)
+current = true
+fov = 100.0
+script = ExtResource("4_2dyco")
+
+[node name="Flash" type="SpotLight3D" parent="SubViewport/Camera3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.539619, 0)
+visible = false
+light_energy = 16.0
+shadow_enabled = true
+shadow_blur = 0.2
+spot_range = 15.0
+spot_angle = 70.0
+
+[node name="PauseMenu" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 2
+visible = false
+script = ExtResource("5_ymw4p")
+
+[node name="ColorRect" type="ColorRect" parent="PauseMenu"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.588235)
+
+[node name="Label" type="Label" parent="PauseMenu/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.0
+offset_top = -13.0
+offset_right = 31.0
+offset_bottom = 13.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "PAUSED"
+label_settings = SubResource("LabelSettings_p2ay5")
+
+[node name="Ceilings" type="Node3D" parent="."]
+
+[node name="Ceiling" parent="Ceilings" instance=ExtResource("6_cjst2")]
+transform = Transform3D(24, 0, 0, 0, 1, 0, 0, 0, 24, -19.5, 4.5, 91)
+texture = ExtResource("7_mpvdo")
+
+[node name="Navigable" type="NavigationRegion3D" parent="."]
+navigation_mesh = ExtResource("8_6bqjd")
+
+[node name="Arm" type="Node3D" parent="Navigable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5, 0, 87.5)
+
+[node name="Wall11" parent="Navigable/Arm" instance=ExtResource("11_4h36h")]
+transform = Transform3D(1, 0, -1.13687e-14, 0, 1, 0, 1.13687e-14, 0, 1, 4.5, 2.5, -25)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall12" parent="Navigable/Arm" instance=ExtResource("11_4h36h")]
+transform = Transform3D(1, 0, -1.13687e-14, 0, 1, 0, 1.13687e-14, 0, 1, -4.5, 2.5, -25)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall14" parent="Navigable/Arm" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -5, 0, -4.37114e-08, 7.5, 2.5, -37.5)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall13" parent="Navigable/Arm" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-2.18557e-07, 0, -1, 0, 1, 0, 5, 0, -4.37114e-08, -7.5, 2.5, -37.5)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall8" parent="Navigable/Arm" instance=ExtResource("11_4h36h")]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -50)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Floor3" parent="Navigable/Arm" instance=ExtResource("9_my160")]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 5, 0, 0, -37.5)
+texture = ExtResource("18_tkbfu")
+
+[node name="Floor4" parent="Navigable/Arm" instance=ExtResource("9_my160")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 5, 0, 0, -12.5)
+texture = ExtResource("18_tkbfu")
+
+[node name="Wall" parent="Navigable/Arm" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-2.18557e-07, 0, -1, 0, 1, 0, 5, 0, -4.37114e-08, -4, 2, -12.5)
+texture_face = ExtResource("14_cn3mg")
+texture_side = ExtResource("15_cgs0w")
+
+[node name="Wall2" parent="Navigable/Arm" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-2.18557e-07, 0, -1, 0, 1, 0, 5, 0, -4.37114e-08, 4, 2, -12.5)
+texture_face = ExtResource("14_cn3mg")
+texture_side = ExtResource("15_cgs0w")
+
+[node name="Arm2" type="Node3D" parent="Navigable"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -15.5, 0, 91.5)
+
+[node name="Wall11" parent="Navigable/Arm2" instance=ExtResource("11_4h36h")]
+transform = Transform3D(1, 0, -1.13687e-14, 0, 1, 0, 1.13687e-14, 0, 1, 4.5, 2.5, -25)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall12" parent="Navigable/Arm2" instance=ExtResource("11_4h36h")]
+transform = Transform3D(1, 0, -1.13687e-14, 0, 1, 0, 1.13687e-14, 0, 1, -4.5, 2.5, -25)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall15" parent="Navigable/Arm2" instance=ExtResource("11_4h36h")]
+transform = Transform3D(2, 0, -1.06581e-14, 0, 1, 0, 2.13163e-14, 0, 1, -2.5, 2.5, -31)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall16" parent="Navigable/Arm2" instance=ExtResource("11_4h36h")]
+transform = Transform3D(2, 0, -1.06581e-14, 0, 1, 0, 2.13163e-14, 0, 1, 2.5, 2.5, -37.5)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall17" parent="Navigable/Arm2" instance=ExtResource("11_4h36h")]
+transform = Transform3D(2, 0, -1.06581e-14, 0, 1, 0, 2.13163e-14, 0, 1, -2.5, 2.5, -43.5)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall14" parent="Navigable/Arm2" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -5, 0, -4.37114e-08, 7.5, 2.5, -37.5)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall13" parent="Navigable/Arm2" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-2.18557e-07, 0, -1, 0, 1, 0, 5, 0, -4.37114e-08, -7.5, 2.5, -37.5)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall8" parent="Navigable/Arm2" instance=ExtResource("11_4h36h")]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -50)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Floor3" parent="Navigable/Arm2" instance=ExtResource("9_my160")]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 5, 0, 0, -37.5)
+texture = ExtResource("18_tkbfu")
+
+[node name="Wall" parent="Navigable/Arm2" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-2.18557e-07, 0, -1, 0, 1, 0, 5, 0, -4.37114e-08, -4, 2, -12.5)
+texture_face = ExtResource("14_cn3mg")
+texture_side = ExtResource("15_cgs0w")
+
+[node name="Wall2" parent="Navigable/Arm2" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-2.18557e-07, 0, -1, 0, 1, 0, 5, 0, -4.37114e-08, 4, 2, -12.5)
+texture_face = ExtResource("14_cn3mg")
+texture_side = ExtResource("15_cgs0w")
+
+[node name="Arm3" type="Node3D" parent="Navigable"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -23.5, 0, 91.5)
+
+[node name="Wall11" parent="Navigable/Arm3" instance=ExtResource("11_4h36h")]
+transform = Transform3D(1, 0, -1.13687e-14, 0, 1, 0, 1.13687e-14, 0, 1, 4.5, 2.5, -25)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall12" parent="Navigable/Arm3" instance=ExtResource("11_4h36h")]
+transform = Transform3D(1, 0, -1.13687e-14, 0, 1, 0, 1.13687e-14, 0, 1, -4.5, 2.5, -25)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall14" parent="Navigable/Arm3" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-2.18557e-07, 0, 1, 0, 1, 0, -5, 0, -4.37114e-08, 7.5, 2.5, -37.5)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall13" parent="Navigable/Arm3" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-2.18557e-07, 0, -1, 0, 1, 0, 5, 0, -4.37114e-08, -7.5, 2.5, -37.5)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall15" parent="Navigable/Arm3" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-1.31134e-07, 0, -1, 0, 1, 0, 3, 0, -4.37114e-08, -2.5, 2.5, -32.5)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall16" parent="Navigable/Arm3" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-1.31134e-07, 0, -1, 0, 1, 0, 3, 0, -4.37114e-08, 2, 2.5, -36.5)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall8" parent="Navigable/Arm3" instance=ExtResource("11_4h36h")]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -50)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall9" parent="Navigable/Arm3" instance=ExtResource("11_4h36h")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.5, -44)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Floor3" parent="Navigable/Arm3" instance=ExtResource("9_my160")]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 5, 0, 0, -37.5)
+texture = ExtResource("18_tkbfu")
+
+[node name="Wall" parent="Navigable/Arm3" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-2.18557e-07, 0, -1, 0, 1, 0, 5, 0, -4.37114e-08, -4, 2, -12.5)
+texture_face = ExtResource("14_cn3mg")
+texture_side = ExtResource("15_cgs0w")
+
+[node name="Wall2" parent="Navigable/Arm3" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-2.18557e-07, 0, -1, 0, 1, 0, 5, 0, -4.37114e-08, 4, 2, -12.5)
+texture_face = ExtResource("14_cn3mg")
+texture_side = ExtResource("15_cgs0w")
+
+[node name="Arm4" type="Node3D" parent="Navigable"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -19.5, 0, 95.5)
+
+[node name="Wall11" parent="Navigable/Arm4" instance=ExtResource("11_4h36h")]
+transform = Transform3D(1, 0, -1.13687e-14, 0, 1, 0, 1.13687e-14, 0, 1, 4.5, 2.5, -25)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall12" parent="Navigable/Arm4" instance=ExtResource("11_4h36h")]
+transform = Transform3D(1, 0, -1.13687e-14, 0, 1, 0, 1.13687e-14, 0, 1, -4.5, 2.5, -25)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall14" parent="Navigable/Arm4" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-1.31134e-07, 0, 1, 0, 1, 0, -3, 0, -4.37114e-08, 7.5, 2.5, -32.5)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall13" parent="Navigable/Arm4" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-1.31134e-07, 0, -1, 0, 1, 0, 3, 0, -4.37114e-08, -7.5, 2.5, -32.5)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Wall8" parent="Navigable/Arm4" instance=ExtResource("11_4h36h")]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -40)
+texture_face = SubResource("CompressedTexture2D_1lgeg")
+texture_side = ExtResource("15_lr1sb")
+
+[node name="Floor3" parent="Navigable/Arm4" instance=ExtResource("9_my160")]
+transform = Transform3D(3, 0, 0, 0, 1, 0, 0, 0, 3, 5.72205e-06, 0, -32.5)
+texture = ExtResource("18_tkbfu")
+
+[node name="Floor4" parent="Navigable/Arm4" instance=ExtResource("9_my160")]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 5, 0, 0, -12.5)
+texture = ExtResource("18_tkbfu")
+
+[node name="Wall" parent="Navigable/Arm4" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-2.18557e-07, 0, -1, 0, 1, 0, 5, 0, -4.37114e-08, -4, 2, -12.5)
+texture_face = ExtResource("14_cn3mg")
+texture_side = ExtResource("15_cgs0w")
+
+[node name="Wall2" parent="Navigable/Arm4" instance=ExtResource("11_4h36h")]
+transform = Transform3D(-2.18557e-07, 0, -1, 0, 1, 0, 5, 0, -4.37114e-08, 4, 2, -12.5)
+texture_face = ExtResource("14_cn3mg")
+texture_side = ExtResource("15_cgs0w")
+
+[node name="Floor" parent="Navigable" instance=ExtResource("9_my160")]
+transform = Transform3D(12, 0, 0, 0, 1, 0, 0, 0, 1.6, -19.5, 0, 91.5)
+texture = ExtResource("18_tkbfu")
+
+[node name="Door" parent="." instance=ExtResource("17_p5xyr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5, 2.5, 62.5)
+
+[node name="Door2" parent="." instance=ExtResource("17_p5xyr")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 9.5, 2.5, 91.5)
+required_key = "graphics/stkeys3"
+
+[node name="Door3" parent="." instance=ExtResource("17_p5xyr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5, 2.5, 120.5)
+required_key = "graphics/stkeys4"
+
+[node name="Door4" parent="." instance=ExtResource("17_p5xyr")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -48.5, 2.5, 91.5)
+required_key = "graphics/stkeys5"
+
+[node name="Key" parent="." instance=ExtResource("16_15a0j")]
+transform = Transform3D(1, -0.000226893, 0, 0.000226893, 1, 0, 0, 0, 1, -19.5, 0.342844, 112.5)
+key_id = "graphics/stkeys3"
+
+[node name="Key2" parent="." instance=ExtResource("16_15a0j")]
+transform = Transform3D(1, -0.000226893, 0, 0.000226893, 1, 0, 0, 0, 1, 31.5, 0.342844, 87)
+key_id = "graphics/stkeys5"
+
+[node name="Key3" parent="." instance=ExtResource("16_15a0j")]
+transform = Transform3D(1, -0.000226893, 0, 0.000226893, 1, 0, 0, 0, 1, -71.5, 0.342844, 97)
+key_id = "graphics/stkeys4"
+
+[node name="Regen" parent="." instance=ExtResource("17_0os6x")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -55.5, 1, 96)
+
+[node name="BatteryPickup" parent="." instance=ExtResource("18_d80la")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.5, 1, 96)
+battery_amount = 40
+
+[node name="Shade" parent="." instance=ExtResource("19_wy5b5")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -54.5, 1.5, 87)
+
+[node name="Slither" parent="." instance=ExtResource("20_kkf5l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70.5, 1, 92.5)
+
+[node name="BatteryPickup2" parent="." instance=ExtResource("18_d80la")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.175, 0.5, 41.676)
+battery_amount = 20
+
+[node name="HealthPickup" parent="." instance=ExtResource("21_0qplt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.122, 0.5, 42.252)
+health_amount = 20
+
+[node name="MemoryPickup" parent="." instance=ExtResource("22_eyb3u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.117, 0.5, 41.402)
+memory_amount = 20
+
+[node name="Shade2" parent="." instance=ExtResource("19_wy5b5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.1614, 1.0125, 68.8741)
+wander_on_start = false
+
+[node name="Shade3" parent="." instance=ExtResource("19_wy5b5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.1614, 1.0125, 79.8741)
+wander_on_start = false
+
+[node name="Shade4" parent="." instance=ExtResource("19_wy5b5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.1614, 1.0125, 98.8741)
+wander_on_start = false
+
+[node name="Shade5" parent="." instance=ExtResource("19_wy5b5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.1614, 1.0125, 109.874)
+wander_on_start = false
+
+[node name="Shade6" parent="." instance=ExtResource("19_wy5b5")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 12.5, 1, 87)
+
+[node name="Regen2" parent="." instance=ExtResource("17_0os6x")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 18.5, 1.5, 96.2382)
+
+[node name="Slither2" parent="." instance=ExtResource("20_kkf5l")]
+transform = Transform3D(-1, 0, -1.19209e-07, 0, 1, 0, 1.19209e-07, 0, -1, 31.2767, 1, 91.814)
+
+[node name="Slither3" parent="." instance=ExtResource("20_kkf5l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 1, 131.5)
+
+[node name="Shade7" parent="." instance=ExtResource("19_wy5b5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 1, 124)
+
+[node name="Shade8" parent="." instance=ExtResource("19_wy5b5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.5, 1, 124)
+
+[node name="Exit" parent="." instance=ExtResource("23_bednt")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -20.5, 2.5, 135.25)
