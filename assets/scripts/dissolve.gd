@@ -24,7 +24,7 @@ func set_dissolve_amount(amount: float):
 		set_shader_y_offset(amount);
 
 func _process(delta):
-	particles.emitting = prev_amount != curr_amount;
+	particles.emitting = prev_amount < curr_amount;
 	material.set_shader_parameter("is_dissolving", particles.emitting);
 	if particles.emitting != $SFX.playing:
 		if $SFX.playing:

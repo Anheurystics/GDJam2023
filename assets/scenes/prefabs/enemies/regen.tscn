@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://bnggkrax2w5j1"]
+
+[ext_resource type="PackedScene" uid="uid://buo80p043s8vx" path="res://assets/scenes/prefabs/enemy.tscn" id="1_hbcl7"]
+[ext_resource type="Script" path="res://assets/scripts/regen.gd" id="2_tfxga"]
+
+[node name="Regen" instance=ExtResource("1_hbcl7")]
+script = ExtResource("2_tfxga")
+regen_after_seconds = 3.0
+regen_per_second = 2.0
+sprite_name = "poss"
+attack_start_frame = "e"
+num_attack_frames = 2

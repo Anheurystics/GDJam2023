@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://buo80p043s8vx"]
+[gd_scene load_steps=15 format=3 uid="uid://buo80p043s8vx"]
 
 [ext_resource type="Script" path="res://assets/scripts/enemy.gd" id="1_54rww"]
 [ext_resource type="Material" uid="uid://cljeq7tk2vtjf" path="res://assets/custom_sprite_3d.material" id="2_d5878"]
@@ -8,6 +8,9 @@
 [ext_resource type="AudioStream" uid="uid://cwnm36p6oau7a" path="res://assets/freedoom/sounds/dsposit1.wav" id="6_tqxgk"]
 [ext_resource type="AudioStream" uid="uid://c6h8y0tsmjm48" path="res://assets/freedoom/sounds/dsposit2.wav" id="7_6joq8"]
 [ext_resource type="AudioStream" uid="uid://cfbirm6lrmrh3" path="res://assets/freedoom/sounds/dsposit3.wav" id="8_m1v07"]
+[ext_resource type="AudioStream" uid="uid://l6jxgkh53tvr" path="res://assets/freedoom/sounds/dssgtatk.wav" id="9_5y2e4"]
+[ext_resource type="AudioStream" uid="uid://bcx8otmfjlvm6" path="res://assets/freedoom/sounds/dsbgdth1.wav" id="9_cujgp"]
+[ext_resource type="AudioStream" uid="uid://bp0opxt37n3oc" path="res://assets/freedoom/sounds/dsbgdth2.wav" id="10_7ayfj"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8gtp5"]
 
@@ -19,6 +22,13 @@ stream_1/stream = ExtResource("7_6joq8")
 stream_1/weight = 1.0
 stream_2/stream = ExtResource("8_m1v07")
 stream_2/weight = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_jn8pe"]
+streams_count = 2
+stream_0/stream = ExtResource("9_cujgp")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("10_7ayfj")
+stream_1/weight = 1.0
 
 [node name="Enemy" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -99,5 +109,12 @@ script = ExtResource("2_r607x")
 
 [node name="IdleGrunt" type="AudioStreamPlayer3D" parent="SFX"]
 stream = SubResource("AudioStreamRandomizer_r6jq4")
-pitch_scale = 0.45
+emission_angle_enabled = true
+
+[node name="Death" type="AudioStreamPlayer3D" parent="SFX"]
+stream = SubResource("AudioStreamRandomizer_jn8pe")
+emission_angle_enabled = true
+
+[node name="Attack" type="AudioStreamPlayer3D" parent="SFX"]
+stream = ExtResource("9_5y2e4")
 emission_angle_enabled = true

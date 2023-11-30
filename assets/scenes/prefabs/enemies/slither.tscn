@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://42co4oeg1qs2"]
+
+[ext_resource type="PackedScene" uid="uid://buo80p043s8vx" path="res://assets/scenes/prefabs/enemy.tscn" id="1_0hdjo"]
+[ext_resource type="Script" path="res://assets/scripts/slither.gd" id="1_i4lfw"]
+
+[node name="Slither" instance=ExtResource("1_0hdjo")]
+script = ExtResource("1_i4lfw")
+sprite_name = "sarg"
+sprite_mirrored_dict = {
+"attack": false,
+"hurt": true,
+"walk": true
+}
+attack_start_frame = "e"
+num_attack_frames = 4
+max_health = 20.0
+attack_damage = 5
+attack_rate = 2.0

@@ -1,8 +1,7 @@
-class_name Shade extends Enemy
+class_name Slither extends Enemy
 
 func get_speed():
 	if player_target:
-		return 2;
+		return 5;
 	else:
 		return 1;
-

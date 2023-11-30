@@ -14,7 +14,7 @@ var nav_paused: bool = false;
 var sprite_frames: SpriteFrames;
 
 @export var sprite_name: String;
-@export var sprite_mirrored: bool = true;
+@export var sprite_mirrored_dict = {"walk": true, "hurt": true, "attack": true};
 
 @export var walk_start_frame: String = "a";
 @export var num_walk_frames: int = 4;
@@ -30,9 +30,14 @@ var sprite_frames: SpriteFrames;
 
 @export var max_health: float = 50;
 @onready var health: float = max_health;
+var captured: bool = false
 var curr_anim_prefix: String = "";
 var curr_anim_suffix: String = "";
 var angle_to_player: float = 0;
+
+@export var attack_damage: int = 10;
+@export var attack_rate: float = 1.0;
+var attack_timer: Timer;
 
 var is_attacking: bool = false;
 var player_target: Player = null;
@@ -80,6 +85,11 @@ func _ready():
 	add_child(idle_grunt_timer);
 	idle_grunt_timer.start(randi_range(3, 5));
 	
+	attack_timer = Timer.new();
+	attack_timer.one_shot = false;
+	attack_timer.timeout.connect(attack_target);
+	add_child(attack_timer);
+	
 	set_shaded(false);
 	$Sprite.cast_shadow = false;
 	
@@ -125,7 +135,10 @@ func _on_nav_agent_link_reached(details):
 			walk_random(1.0);
 
 func _on_nav_agent_navigation_finished():
-	walk_random(1.0);
+	if is_following_player:
+		navigate_to(player_target.global_position);
+	else:
+		walk_random(1.0);
 
 func deal_damage(value: float, player: Player):
 	var old = health;
@@ -134,15 +147,15 @@ func deal_damage(value: float, player: Player):
 	if !player_target && player:
 		player_target = player;
 
-	# if old > 5 && health <= 5:
-		# var tween = get_tree().create_tween();
-		# tween.tween_method(set_sprite_flash, 0.0, 1.0, 0.15);
-
 func load_sprite_frames(anim_prefix: String, prefix: String, frames: Array, loop: bool):
 	if frames.is_empty():
 		return;
 
-	var indices = [["1"], ["2", "8"], ["3", "7"], ["4", "6"], ["5"]] if sprite_mirrored else [["1"], ["2"], ["3"], ["4"], ["5"], ["6"], ["7"], ["8"]];
+	var is_mirrored = true;
+	if sprite_mirrored_dict.has(anim_prefix):
+		is_mirrored = sprite_mirrored_dict[anim_prefix];
+	print(anim_prefix + " " + str(is_mirrored));
+	var indices = [["1"], ["2", "8"], ["3", "7"], ["4", "6"], ["5"]] if is_mirrored else [["1"], ["2"], ["3"], ["4"], ["5"], ["6"], ["7"], ["8"]];
 	
 	if not sprite_frames:
 		sprite_frames = SpriteFrames.new();
@@ -172,12 +185,13 @@ func handle_flash(source_position: Vector3, player: Player):
 	var angle = get_face_angle_to_position(source_position);
 	var ratio = abs(angle) / PI;
 	if ratio > 0.80 and health < 5:
+		captured = true;
 		on_death();
 	else:
 		deal_damage(10, player);
 
 func play_grunt_sfx():
-	if health <= 0:
+	if captured:
 		return;
 	if player_target:
 		$SFX/IdleGrunt.play();
@@ -185,6 +199,8 @@ func play_grunt_sfx():
 
 func on_death():
 	idle_grunt_timer.stop();
+	$SFX/Death.play();
+	attack_timer.stop();
 	set_sprite_flash(0.0);
 	var tween = get_tree().create_tween();
 	tween.tween_method(set_sprite_flash, 0.0, 1.0, 0.4);
@@ -197,8 +213,8 @@ func on_death():
 func set_sprite_flash(value: float):
 	(sprite.material_override as ShaderMaterial).set_shader_parameter("flash", value);
 
-func choose_flipped_sprite_suffix(flip: bool, a: String, b: String):
-	if sprite_mirrored:
+func choose_flipped_sprite_suffix(anim_prefix: String, flip: bool, a: String, b: String):
+	if sprite_mirrored_dict[anim_prefix]:
 		sprite.flip_h = flip;
 		invisibleSprite.flip_h = flip;
 		return a + "_" + b;
@@ -221,27 +237,27 @@ func get_face_angle_to_position(pos: Vector3):
 	return angle;
 
 func _process(_delta):
-	if health <= 0:
+	if captured:
 		return;
 
 	angle_to_player = get_face_angle_to_position(get_viewport().get_camera_3d().global_position);
 	var pi_ratio = abs(angle_to_player) / PI;
 	var flip = angle_to_player < 0;
 
+	if not is_attacking:
+		play_animation("walk");
+
 	if pi_ratio < EIGHTH:
 		curr_anim_suffix = "5";
 	elif pi_ratio < 3 * EIGHTH:
-		curr_anim_suffix = choose_flipped_sprite_suffix(flip, "4", "6");
+		curr_anim_suffix = choose_flipped_sprite_suffix(curr_anim_prefix, flip, "4", "6");
 	elif pi_ratio < 5 * EIGHTH:
-		curr_anim_suffix = choose_flipped_sprite_suffix(flip, "3", "7");
+		curr_anim_suffix = choose_flipped_sprite_suffix(curr_anim_prefix, flip, "3", "7");
 	elif pi_ratio < 7 * EIGHTH:
-		curr_anim_suffix = choose_flipped_sprite_suffix(flip, "2", "8");
+		curr_anim_suffix = choose_flipped_sprite_suffix(curr_anim_prefix, flip, "2", "8");
 	else:
 		curr_anim_suffix = "1";
 
-	if not is_attacking:
-		play_animation("walk");
-	
 	var curr_speed = velocity.length();
 	var anim_speed = 1;
 	if curr_anim_prefix == "walk":
@@ -259,9 +275,22 @@ func _process(_delta):
 		await get_tree().create_timer(0.5).timeout;
 		if player_target:
 			navigate_to(player_target.global_position);
+	
+	if is_following_player:
+		if not player_target:
+			attack_timer.stop();
+			is_following_player = false;
+		else:
+			if attack_timer and attack_timer.is_stopped():
+				attack_timer.start(attack_rate);
+
+	if attack_timer and not attack_timer.is_stopped():
+		var diff = player_target.global_position - global_position;
+		diff.y = 0; 
+		attack_timer.paused = diff.length() > 2.0
 
 func _physics_process(delta):
-	if health <= 0:
+	if captured:
 		return;
 
 	# Add the gravity.
@@ -334,15 +363,22 @@ func get_speed():
 		return 4;
 
 func attack(player: Player):
-	if health <= 0:
+	if captured:
 		return;
 		
+	is_attacking = true;
 	play_animation("attack");
+	$SFX/Attack.play();
 	await get_tree().create_timer(0.5).timeout;
+	is_attacking = false;
 	
-	if health <= 0:
-		player.modify_health(-10);
+	if health > 0:
+		player.modify_health(-attack_damage);
 		player.increment_grab(0.5, self);
+
+func attack_target():
+	if player_target:
+		attack(player_target);
 
 func serialize():
 	return {

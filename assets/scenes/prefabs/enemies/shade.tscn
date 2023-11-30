@@ -9,4 +9,13 @@ sprite_name = "poss"
 attack_start_frame = "e"
 num_attack_frames = 2
 can_open_doors = false
-max_health = 20.0
+max_health = 10.0
+
+[node name="IdleGrunt" parent="SFX" index="0"]
+pitch_scale = 0.45
+
+[node name="Death" parent="SFX" index="1"]
+pitch_scale = 0.45
+
+[node name="Attack" parent="SFX" index="2"]
+pitch_scale = 0.45
