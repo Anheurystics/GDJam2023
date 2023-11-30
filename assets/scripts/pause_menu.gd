@@ -7,8 +7,10 @@ func _input(event):
 		toggle_pause()
 	if event.is_action_pressed("quick_save"):
 		Progress.save_game();
+		get_parent().find_child("Player").log_message("Game saved");
 	if event.is_action_pressed("quick_load"):
 		Progress.load_game();
+		get_parent().find_child("Player").log_message("Game loaded");
 
 func toggle_pause():
 	is_paused = !is_paused;

@@ -8,6 +8,8 @@ func _ready():
 	snapshot = $"../../Player/Snapshot";
 
 func _process(_delta):
+	if !camera || !snapshot:
+		return;
 	global_position = camera.global_position
 	global_position.y -= 0.4;
 	global_position.y += snapshot.camera_ads * 0.2;
